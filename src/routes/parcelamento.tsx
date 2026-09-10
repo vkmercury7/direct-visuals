@@ -91,6 +91,7 @@ function Parcelamento() {
   function continuar() {
     if (!escolhida || !valor) return;
     salvarSimulacao({ ...escolhida, valorSolicitado: valor });
+    navigate({ to: "/resumo-solicitacao" });
   }
 
   return (
