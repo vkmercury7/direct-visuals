@@ -14,6 +14,7 @@ import { Route as AnaliseSolicitacaoRouteImport } from './routes/analise-solicit
 import { Route as ParcelamentoRouteImport } from './routes/parcelamento'
 import { Route as ResumoSolicitacaoRouteImport } from './routes/resumo-solicitacao'
 import { Route as SimulacaoRouteImport } from './routes/simulacao'
+import { Route as ApiPublicPinpayWebhookRouteImport } from './routes/api/public/pinpay-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const SimulacaoRoute = SimulacaoRouteImport.update({
   path: '/simulacao',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPinpayWebhookRoute = ApiPublicPinpayWebhookRouteImport.update({
+  id: '/api/public/pinpay-webhook',
+  path: '/api/public/pinpay-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/parcelamento': typeof ParcelamentoRoute
   '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
+  '/api/public/pinpay-webhook': typeof ApiPublicPinpayWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/parcelamento': typeof ParcelamentoRoute
   '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
+  '/api/public/pinpay-webhook': typeof ApiPublicPinpayWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,6 +70,7 @@ export interface FileRoutesById {
   '/parcelamento': typeof ParcelamentoRoute
   '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
+  '/api/public/pinpay-webhook': typeof ApiPublicPinpayWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -71,6 +80,7 @@ export interface FileRouteTypes {
     | '/parcelamento'
     | '/resumo-solicitacao'
     | '/simulacao'
+    | '/api/public/pinpay-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/parcelamento'
     | '/resumo-solicitacao'
     | '/simulacao'
+    | '/api/public/pinpay-webhook'
   id:
     | '__root__'
     | '/'
@@ -85,6 +96,7 @@ export interface FileRouteTypes {
     | '/parcelamento'
     | '/resumo-solicitacao'
     | '/simulacao'
+    | '/api/public/pinpay-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,6 +105,7 @@ export interface RootRouteChildren {
   ParcelamentoRoute: typeof ParcelamentoRoute
   ResumoSolicitacaoRoute: typeof ResumoSolicitacaoRoute
   SimulacaoRoute: typeof SimulacaoRoute
+  ApiPublicPinpayWebhookRoute: typeof ApiPublicPinpayWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -132,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SimulacaoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/pinpay-webhook': {
+      id: '/api/public/pinpay-webhook'
+      path: '/api/public/pinpay-webhook'
+      fullPath: '/api/public/pinpay-webhook'
+      preLoaderRoute: typeof ApiPublicPinpayWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -141,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParcelamentoRoute: ParcelamentoRoute,
   ResumoSolicitacaoRoute: ResumoSolicitacaoRoute,
   SimulacaoRoute: SimulacaoRoute,
+  ApiPublicPinpayWebhookRoute: ApiPublicPinpayWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
