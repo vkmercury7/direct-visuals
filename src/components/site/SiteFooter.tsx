@@ -41,7 +41,7 @@ export function SiteFooter() {
 
       <div className="w-full bg-brand-orange-dark">
         <p className="mx-auto max-w-5xl px-6 py-4 text-center text-[12px] italic uppercase leading-[1.4] md:text-sm">
-          © 2026 [Nome da Financeira] — Todos os direitos reservados.
+          © 2026 FACTA — TODOS OS DIREITOS RESERVADOS.
         </p>
       </div>
     </footer>
