@@ -8,11 +8,13 @@ export function SiteFooter() {
     <footer className="w-full bg-brand-orange text-brand-orange-foreground">
       <div className="mx-auto w-full max-w-5xl px-6 py-10 md:grid md:grid-cols-[240px_1fr] md:items-start md:gap-12 md:py-14">
         <div className="flex flex-col items-center md:items-start">
-          <img
-            src={logoAsset.url}
-            alt="FACTTAL BR - Soluções Financeiras"
-            className="h-auto w-[75%] max-w-[260px] object-contain md:w-full md:max-w-[220px]"
-          />
+          <div className="w-[75%] max-w-[260px] rounded-lg bg-background px-4 py-3 md:w-full md:max-w-[220px]">
+            <img
+              src={logoAsset.url}
+              alt="FACTTAL BR - Soluções Financeiras"
+              className="h-auto w-full object-contain"
+            />
+          </div>
         </div>
 
         <div className="mt-8 text-center md:mt-0 md:text-left">
