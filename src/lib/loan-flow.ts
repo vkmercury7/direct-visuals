@@ -12,9 +12,10 @@ export const LOAN_RATES: Record<number, number> = {
   6: 0.0329,
   9: 0.0349,
   12: 0.0379,
+  18: 0.0419,
 };
 
-export const LOAN_TERMS = [3, 6, 9, 12];
+export const LOAN_TERMS = [3, 6, 9, 12, 18];
 
 export type OpcaoParcelamento = {
   parcelas: number;

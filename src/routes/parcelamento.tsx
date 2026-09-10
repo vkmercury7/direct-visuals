@@ -117,9 +117,10 @@ function Parcelamento() {
           </p>
         </section>
 
-        <div className="mt-6 grid grid-cols-1 gap-4 md:mt-8 md:grid-cols-2">
-          {opcoes.map((o) => {
+        <div className="mt-6 grid grid-cols-1 gap-4 md:mt-8 md:grid-cols-6">
+          {opcoes.map((o, i) => {
             const ativo = selecionada === o.parcelas;
+            const span = i < 3 ? "md:col-span-2" : "md:col-span-3";
             const destaque =
               menorParcela?.parcelas === o.parcelas
                 ? "Menor parcela"
@@ -132,7 +133,7 @@ function Parcelamento() {
                 type="button"
                 onClick={() => setSelecionada(o.parcelas)}
                 aria-pressed={ativo}
-                className={`w-full rounded-xl border bg-card p-5 text-left transition-colors ${
+                className={`w-full rounded-xl border bg-card p-5 text-left transition-colors ${span} ${
                   ativo
                     ? "border-brand-orange ring-2 ring-brand-orange/30"
                     : "border-border hover:border-brand-blue"
