@@ -48,9 +48,21 @@ export const createPixCharge = createServerFn({ method: "POST" })
       throw new Error("erro_interno");
     }
 
-    const siteUrl =
-      process.env["PUBLIC_SITE_URL"] ??
-      "https://project--a327450f-1522-4314-baf9-374281a248f6.lovable.app";
+    // Origem da cobrança: variável explícita > variáveis do provedor de deploy
+    // (Netlify define URL / DEPLOY_PRIME_URL) > origem real da requisição atual.
+    const siteUrl = await (async () => {
+      const explicito =
+        process.env["PUBLIC_SITE_URL"] ??
+        process.env["URL"] ??
+        process.env["DEPLOY_PRIME_URL"];
+      if (explicito) return explicito.replace(/\/+$/, "");
+      try {
+        const { getRequestUrl } = await import("@tanstack/react-start/server");
+        return getRequestUrl().origin;
+      } catch {
+        return "";
+      }
+    })();
 
     try {
       const response = await fetch("https://api.usepinpay.com/functions/v1/api-v1/pix", {
