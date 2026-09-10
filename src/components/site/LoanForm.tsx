@@ -131,10 +131,10 @@ export function LoanForm() {
               aria-label="Data de Nascimento"
               value={nascimento}
               onChange={(e) => setNascimento(e.target.value)}
-              className={`${fieldClass} ${nascimento ? "" : "text-transparent [&::-webkit-datetime-edit]:text-transparent"}`}
+              className={`${fieldClass} pr-12 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-4 [&::-webkit-calendar-picker-indicator]:top-1/2 [&::-webkit-calendar-picker-indicator]:-translate-y-1/2 ${nascimento ? "" : "text-transparent [&::-webkit-datetime-edit]:text-transparent"}`}
             />
             {!nascimento && (
-              <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-base italic text-muted-foreground">
+              <span className="pointer-events-none absolute inset-y-0 left-4 right-12 flex items-center overflow-hidden whitespace-nowrap text-base italic text-muted-foreground">
                 Data de Nascimento
               </span>
             )}
