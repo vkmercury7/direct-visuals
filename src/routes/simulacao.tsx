@@ -67,9 +67,14 @@ function Simulacao() {
   }
 
   function continuar() {
+    const valorDesejado = clampValor(valor);
+    if (!valorValido(valorDesejado)) {
+      setValor(LOAN_CONFIG.initial);
+      return;
+    }
     const solicitacao = {
       dadosPessoais: dados,
-      solicitacao: { valorDesejado: valor },
+      solicitacao: { valorDesejado },
     };
     // Próxima etapa do fluxo será conectada aqui.
     console.info("solicitacao", solicitacao);
