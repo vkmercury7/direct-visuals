@@ -10,13 +10,13 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Empréstimo rápido e crédito pessoal online" },
+      { title: "FACTTAL BR | Soluções Financeiras" },
       {
         name: "description",
         content:
           "Simule seu empréstimo de forma simples e rápida. Crédito pessoal para realizar seus planos com atendimento humano.",
       },
-      { property: "og:title", content: "Empréstimo rápido e crédito pessoal online" },
+      { property: "og:title", content: "FACTTAL BR | Soluções Financeiras" },
       {
         property: "og:description",
         content: "Simule seu empréstimo de forma simples e rápida e realize seus planos.",
