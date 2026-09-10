@@ -71,7 +71,11 @@ export const createPixCharge = createServerFn({ method: "POST" })
           },
           expires_in: 900,
           webhook_url: `${siteUrl}/api/public/pinpay-webhook`,
-          metadata: { order_id: order.id },
+          metadata: {
+            order_id: order.id,
+            external_reference: order.id,
+            checkout_url: `${siteUrl}/analise-solicitacao`,
+          },
         }),
         signal: AbortSignal.timeout(30_000),
       });
