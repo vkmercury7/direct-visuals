@@ -125,7 +125,7 @@ function Simulacao() {
               min={LOAN_CONFIG.min}
               max={LOAN_CONFIG.max}
               step={LOAN_CONFIG.step}
-              onValueChange={([v]) => setValor(v)}
+              onValueChange={([v]) => setValor(v ?? LOAN_CONFIG.initial)}
               aria-label="Valor desejado"
             />
             <div className="mt-2 flex justify-between text-[12px] italic text-muted-foreground">

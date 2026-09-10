@@ -21,7 +21,7 @@ function maskCpf(value: string) {
 
 type Errors = Partial<Record<"nome" | "email" | "cpf" | "nascimento" | "termos", string>>;
 
-function ErrorText({ children }: { children?: string }) {
+function ErrorText({ children }: { children?: string | undefined }) {
   if (!children) return null;
   return <p className="mt-1 text-[13px] italic text-destructive">{children}</p>;
 }
