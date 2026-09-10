@@ -79,7 +79,7 @@ export function SiteHeader() {
               <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 SAC
               </span>
-              <span className="text-base font-bold text-brand-blue-dark">0800 000 0000</span>
+              <span className="text-base font-bold text-brand-blue-dark">0800 890 0367</span>
             </span>
           </div>
           <div className="flex items-center gap-2 text-center sm:text-left">
@@ -89,7 +89,7 @@ export function SiteHeader() {
                 Peça já seu empréstimo
               </span>
               <span className="text-base font-bold text-brand-blue-dark">
-                WhatsApp (00) 00000-0000
+                WhatsApp (18) 99826-7891
               </span>
             </span>
           </div>
