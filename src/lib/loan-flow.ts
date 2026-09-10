@@ -75,6 +75,38 @@ export function salvarSimulacao(sim: SimulacaoEscolhida) {
   sessionStorage.setItem(SIM_KEY, JSON.stringify(sim));
 }
 
+export function lerSimulacao(): SimulacaoEscolhida | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(SIM_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as SimulacaoEscolhida;
+    if (!parsed?.parcelas || !parsed?.valorSolicitado) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+/** Valor único da garantia da operação. Alterar aqui muda toda a aplicação. */
+export const GUARANTEE_AMOUNT = 29.9;
+
+/**
+ * PLACEHOLDERS: preencher com as regras oficiais da empresa.
+ * Não inventar informações jurídicas ou financeiras.
+ */
+export const GUARANTEE_INFO: { pergunta: string; resposta: string }[] = [
+  { pergunta: "Finalidade da cobrança", resposta: "[PREENCHER: finalidade oficial da garantia]" },
+  { pergunta: "Quem recebe o valor", resposta: "[PREENCHER: destinatário do valor]" },
+  { pergunta: "O valor é reembolsável?", resposta: "[PREENCHER: regra de reembolso]" },
+  { pergunta: "Quando o valor é devido", resposta: "[PREENCHER: momento da cobrança]" },
+  { pergunta: "Integra o CET?", resposta: "[PREENCHER: se integra ou não o CET]" },
+  {
+    pergunta: "Se o empréstimo não for contratado",
+    resposta: "[PREENCHER: consequência caso não haja contratação]",
+  },
+];
+
 export const minLoanAmount = LOAN_CONFIG.min;
 export const maxLoanAmount = LOAN_CONFIG.max;
 
