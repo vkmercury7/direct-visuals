@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { LoadingScreen } from "@/components/site/LoadingScreen";
+import { cpfValido, salvarDadosPessoais } from "@/lib/loan-flow";
 
 const fieldClass =
   "h-12 rounded-md border-border bg-background px-4 text-base text-brand-blue-dark placeholder:italic placeholder:text-muted-foreground";
@@ -16,58 +19,105 @@ function maskCpf(value: string) {
     .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
 }
 
+type Errors = Partial<Record<"nome" | "email" | "cpf" | "nascimento" | "termos", string>>;
+
+function ErrorText({ children }: { children?: string }) {
+  if (!children) return null;
+  return <p className="mt-1 text-[13px] italic text-destructive">{children}</p>;
+}
+
 export function LoanForm() {
+  const navigate = useNavigate();
   const [accepted, setAccepted] = useState(false);
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
+  const [nascimento, setNascimento] = useState("");
+  const [errors, setErrors] = useState<Errors>({});
+  const [loading, setLoading] = useState(false);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const next: Errors = {};
+    if (nome.trim().split(/\s+/).length < 2) next.nome = "Informe seu nome completo.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()))
+      next.email = "Informe um e-mail válido.";
+    if (!cpf.trim()) next.cpf = "Informe seu CPF.";
+    else if (!cpfValido(cpf)) next.cpf = "CPF inválido.";
+    if (!nascimento) next.nascimento = "Informe sua data de nascimento.";
+    if (!accepted) next.termos = "É necessário aceitar os termos.";
+
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
+
+    salvarDadosPessoais({ nome: nome.trim(), email: email.trim(), cpf, nascimento });
+    setLoading(true);
+    setTimeout(() => {
+      navigate({ to: "/simulacao" });
+    }, 3000);
+  }
+
+  if (loading) return <LoadingScreen />;
 
   return (
-    <form
-      className="mx-auto w-full max-w-2xl text-left"
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
-    >
+    <form className="mx-auto w-full max-w-2xl text-left" onSubmit={handleSubmit} noValidate>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Input
-          id="nome"
-          name="nome"
-          required
-          autoComplete="name"
-          aria-label="Nome completo"
-          placeholder="Nome Completo*"
-          className={`${fieldClass} md:col-span-2`}
-        />
+        <div className="md:col-span-2">
+          <Input
+            id="nome"
+            name="nome"
+            autoComplete="name"
+            aria-label="Nome completo"
+            placeholder="Nome Completo*"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            className={fieldClass}
+          />
+          <ErrorText>{errors.nome}</ErrorText>
+        </div>
 
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          aria-label="E-mail"
-          placeholder="E-mail*"
-          className={`${fieldClass} md:col-span-2`}
-        />
+        <div className="md:col-span-2">
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            aria-label="E-mail"
+            placeholder="E-mail*"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={fieldClass}
+          />
+          <ErrorText>{errors.email}</ErrorText>
+        </div>
 
-        <Input
-          id="cpf"
-          name="cpf"
-          inputMode="numeric"
-          aria-label="CPF"
-          placeholder="CPF"
-          value={cpf}
-          onChange={(e) => setCpf(maskCpf(e.target.value))}
-          className={fieldClass}
-        />
+        <div>
+          <Input
+            id="cpf"
+            name="cpf"
+            inputMode="numeric"
+            aria-label="CPF"
+            placeholder="CPF"
+            value={cpf}
+            onChange={(e) => setCpf(maskCpf(e.target.value))}
+            className={fieldClass}
+          />
+          <ErrorText>{errors.cpf}</ErrorText>
+        </div>
 
-        <Input
-          id="nascimento"
-          name="nascimento"
-          type="date"
-          aria-label="Data de Nascimento"
-          placeholder="Data de Nascimento"
-          className={fieldClass}
-        />
+        <div>
+          <Input
+            id="nascimento"
+            name="nascimento"
+            type="date"
+            aria-label="Data de Nascimento"
+            placeholder="Data de Nascimento"
+            value={nascimento}
+            onChange={(e) => setNascimento(e.target.value)}
+            className={fieldClass}
+          />
+          <ErrorText>{errors.nascimento}</ErrorText>
+        </div>
       </div>
 
       <div className="mt-6 flex items-start gap-3">
@@ -89,10 +139,10 @@ export function LoanForm() {
           .
         </Label>
       </div>
+      <ErrorText>{errors.termos}</ErrorText>
 
       <Button
         type="submit"
-        disabled={!accepted}
         className="mt-7 h-12 w-full rounded-md bg-brand-orange text-base font-bold uppercase italic tracking-wide text-brand-orange-foreground hover:bg-brand-orange/90"
       >
         Continuar <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
