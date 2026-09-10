@@ -121,7 +121,12 @@ export const createPixCharge = createServerFn({ method: "POST" })
       if (!response.ok) {
         const detalhe = await response.text().catch(() => "");
         console.error("pinpay_pix_failed", response.status, detalhe.slice(0, 500));
-        await supabaseAdmin.from("orders").update({ status: "failed" }).eq("id", order.id);
+        await db.rpc("pix_update_order", {
+          p_token: serviceToken,
+          p_order_id: order.id,
+          p_status: "failed",
+        });
+
         throw new Error("gateway_error");
       }
 
@@ -141,7 +146,15 @@ export const createPixCharge = createServerFn({ method: "POST" })
         expires_at: resposta.pix?.expires_at ?? resposta.expires_at ?? null,
       };
 
-      await supabaseAdmin.from("orders").update(patch).eq("id", order.id);
+      await db.rpc("pix_update_order", {
+        p_token: serviceToken,
+        p_order_id: order.id,
+        p_pinpay_id: patch.pinpay_id,
+        p_qr_code: patch.qr_code,
+        p_qr_code_url: patch.qr_code_url,
+        p_expires_at: patch.expires_at,
+      });
+
 
       return {
         order_id: order.id,
@@ -154,7 +167,12 @@ export const createPixCharge = createServerFn({ method: "POST" })
         throw error;
       }
       console.error("pinpay_pix_exception", error instanceof Error ? error.message : "unknown");
-      await supabaseAdmin.from("orders").update({ status: "failed" }).eq("id", order.id);
+      await db.rpc("pix_update_order", {
+        p_token: serviceToken,
+        p_order_id: order.id,
+        p_status: "failed",
+      });
+
       throw new Error("gateway_error");
     }
   });
