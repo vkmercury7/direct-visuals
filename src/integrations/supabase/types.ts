@@ -14,7 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      orders: {
+        Row: {
+          amount: number
+          created_at: string
+          expires_at: string | null
+          id: string
+          pinpay_id: string | null
+          qr_code: string | null
+          qr_code_url: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          pinpay_id?: string | null
+          qr_code?: string | null
+          qr_code_url?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          pinpay_id?: string | null
+          qr_code?: string | null
+          qr_code_url?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      processed_webhooks: {
+        Row: {
+          created_at: string
+          key: string
+        }
+        Insert: {
+          created_at?: string
+          key: string
+        }
+        Update: {
+          created_at?: string
+          key?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
