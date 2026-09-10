@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ParcelamentoRouteImport } from './routes/parcelamento'
 import { Route as SimulacaoRouteImport } from './routes/simulacao'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParcelamentoRoute = ParcelamentoRouteImport.update({
+  id: '/parcelamento',
+  path: '/parcelamento',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SimulacaoRoute = SimulacaoRouteImport.update({
@@ -25,27 +31,31 @@ const SimulacaoRoute = SimulacaoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/parcelamento': typeof ParcelamentoRoute
   '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/parcelamento': typeof ParcelamentoRoute
   '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/parcelamento': typeof ParcelamentoRoute
   '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/simulacao'
+  fullPaths: '/' | '/parcelamento' | '/simulacao'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/simulacao'
-  id: '__root__' | '/' | '/simulacao'
+  to: '/' | '/parcelamento' | '/simulacao'
+  id: '__root__' | '/' | '/parcelamento' | '/simulacao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ParcelamentoRoute: typeof ParcelamentoRoute
   SimulacaoRoute: typeof SimulacaoRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parcelamento': {
+      id: '/parcelamento'
+      path: '/parcelamento'
+      fullPath: '/parcelamento'
+      preLoaderRoute: typeof ParcelamentoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/simulacao': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ParcelamentoRoute: ParcelamentoRoute,
   SimulacaoRoute: SimulacaoRoute,
 }
 export const routeTree = rootRouteImport

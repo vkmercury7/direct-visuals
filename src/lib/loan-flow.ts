@@ -6,6 +6,74 @@ export const LOAN_CONFIG = {
   quickValues: [500, 1500, 3000, 4500],
 } as const;
 
+// Taxas provisórias de simulação (a.m.). Alterar aqui muda toda a aplicação.
+export const LOAN_RATES: Record<number, number> = {
+  3: 0.0299,
+  6: 0.0329,
+  9: 0.0349,
+  12: 0.0379,
+};
+
+export const LOAN_TERMS = [3, 6, 9, 12];
+
+export type OpcaoParcelamento = {
+  parcelas: number;
+  taxaMensal: number;
+  valorParcela: number;
+  totalEstimado: number;
+};
+
+/** Sistema PRICE: PMT = P * [i(1+i)^n] / [(1+i)^n - 1] */
+export function calcularParcela(principal: number, taxaMensal: number, n: number) {
+  if (taxaMensal <= 0) return Math.round((principal / n) * 100) / 100;
+  const f = Math.pow(1 + taxaMensal, n);
+  return Math.round(((principal * (taxaMensal * f)) / (f - 1)) * 100) / 100;
+}
+
+export function calcularOpcoes(principal: number): OpcaoParcelamento[] {
+  return LOAN_TERMS.map((n) => {
+    const taxaMensal = LOAN_RATES[n] ?? 0;
+    const valorParcela = calcularParcela(principal, taxaMensal, n);
+    return {
+      parcelas: n,
+      taxaMensal,
+      valorParcela,
+      totalEstimado: Math.round(valorParcela * n * 100) / 100,
+    };
+  });
+}
+
+export function formatarTaxa(taxa: number) {
+  return `${(taxa * 100).toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}% a.m.`;
+}
+
+const VALOR_KEY = "solicitacao:valorDesejado";
+
+export function salvarValorDesejado(valor: number) {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem(VALOR_KEY, String(valor));
+}
+
+export function lerValorDesejado(): number | null {
+  if (typeof window === "undefined") return null;
+  const raw = sessionStorage.getItem(VALOR_KEY);
+  if (!raw) return null;
+  const n = Number(raw);
+  return valorValido(n) ? n : null;
+}
+
+const SIM_KEY = "solicitacao:simulacao";
+
+export type SimulacaoEscolhida = OpcaoParcelamento & { valorSolicitado: number };
+
+export function salvarSimulacao(sim: SimulacaoEscolhida) {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem(SIM_KEY, JSON.stringify(sim));
+}
+
 export const minLoanAmount = LOAN_CONFIG.min;
 export const maxLoanAmount = LOAN_CONFIG.max;
 
