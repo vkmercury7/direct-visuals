@@ -27,6 +27,30 @@ function validar(input: CreatePixInput): CreatePixInput {
   return { name, email, cpf, phone };
 }
 
+// Cliente server-side com a chave publicável (pública) + token de serviço.
+// Evita depender da service role key, que não existe fora do ambiente Lovable.
+async function getServerDb() {
+  const { createClient } = await import("@supabase/supabase-js");
+  const url =
+    process.env["SUPABASE_URL"] ?? (import.meta.env["VITE_SUPABASE_URL"] as string | undefined);
+  const key =
+    process.env["SUPABASE_PUBLISHABLE_KEY"] ??
+    (import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined);
+  const token = process.env["PIX_SERVER_TOKEN"];
+  if (!url || !key || !token) {
+    console.error("pix_db_config_missing", {
+      url: Boolean(url),
+      key: Boolean(key),
+      token: Boolean(token),
+    });
+    throw new Error("erro_interno");
+  }
+  const client = createClient(url, key, {
+    auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+  });
+  return { client, token };
+}
+
 export const createPixCharge = createServerFn({ method: "POST" })
   .inputValidator(validar)
   .handler(async ({ data }): Promise<PixChargeResult> => {
@@ -35,18 +59,20 @@ export const createPixCharge = createServerFn({ method: "POST" })
       throw new Error("pagamento_indisponivel");
     }
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { client: db, token: serviceToken } = await getServerDb();
 
-    const { data: order, error: dbErr } = await supabaseAdmin
-      .from("orders")
-      .insert({ amount: PIX_AMOUNT_CENTS, status: "awaiting_payment" })
-      .select()
-      .single();
+    const { data: orderId, error: dbErr } = await db.rpc("pix_create_order", {
+      p_token: serviceToken,
+      p_amount: PIX_AMOUNT_CENTS,
+    });
 
-    if (dbErr || !order) {
+    if (dbErr || !orderId) {
       console.error("pix_order_insert_failed", dbErr?.message);
       throw new Error("erro_interno");
     }
+
+    const order = { id: orderId as string };
+
 
     // Origem da cobrança: variável explícita > variáveis do provedor de deploy
     // (Netlify define URL / DEPLOY_PRIME_URL) > origem real da requisição atual.
