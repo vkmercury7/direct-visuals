@@ -1,16 +1,16 @@
 import { Banknote, Phone, MessageCircle, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { navItems } from "@/components/site/SiteNav";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 function Logo({ className = "" }: { className?: string }) {
   return (
-    <a href="/" className={`flex shrink-0 items-center gap-2 ${className}`}>
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-blue text-primary-foreground md:h-11 md:w-11">
-        <Banknote className="h-5 w-5 md:h-6 md:w-6" aria-hidden="true" />
-      </span>
-      <span className="font-display text-lg leading-none tracking-tight text-brand-blue-dark md:text-xl">
-        SUA LOGO
-      </span>
+    <a href="/" className={`flex shrink-0 items-center ${className}`}>
+      <img
+        src={logoAsset.url}
+        alt="Logotipo da financeira"
+        className="h-9 w-auto max-w-[160px] object-contain md:h-12 md:max-w-[220px]"
+      />
     </a>
   );
 }
