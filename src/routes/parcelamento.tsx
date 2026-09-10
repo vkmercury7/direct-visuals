@@ -133,7 +133,7 @@ function Parcelamento() {
                 type="button"
                 onClick={() => setSelecionada(o.parcelas)}
                 aria-pressed={ativo}
-                className={`w-full rounded-xl border bg-card p-5 text-left transition-colors ${
+                className={`w-full rounded-xl border bg-card p-5 text-left transition-colors ${span} ${
                   ativo
                     ? "border-brand-orange ring-2 ring-brand-orange/30"
                     : "border-border hover:border-brand-blue"
