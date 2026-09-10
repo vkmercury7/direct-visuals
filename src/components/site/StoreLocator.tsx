@@ -106,7 +106,7 @@ export function StoreLocator() {
                 key={i}
                 style={{ top: pin.top, left: pin.left }}
                 className={`absolute h-5 w-5 -translate-x-1/2 -translate-y-full drop-shadow md:h-6 md:w-6 ${
-                  pin.matriz ? "fill-brand-blue-dark text-brand-blue-dark" : "fill-brand-blue text-brand-blue"
+                  pin.matriz ? "fill-brand-blue-dark text-background" : "fill-brand-orange-dark text-background"
                 }`}
                 aria-hidden="true"
               />

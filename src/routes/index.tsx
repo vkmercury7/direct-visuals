@@ -3,6 +3,9 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteNav } from "@/components/site/SiteNav";
 import { HeroBanner } from "@/components/site/HeroBanner";
 import { CallToActionSection } from "@/components/site/CallToActionSection";
+import { BannerPair } from "@/components/site/BannerPair";
+import { StoreLocator } from "@/components/site/StoreLocator";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,6 +35,11 @@ function Index() {
       <SiteNav />
       <HeroBanner />
       <CallToActionSection />
+      <BannerPair />
+      <div className="h-14 bg-background md:h-24" aria-hidden="true" />
+      <StoreLocator />
+      <div className="h-6 bg-background md:h-10" aria-hidden="true" />
+      <SiteFooter />
     </main>
   );
 }
