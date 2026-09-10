@@ -44,8 +44,15 @@ export const Route = createFileRoute("/analise-solicitacao")({
 function AnaliseSolicitacao() {
   const navigate = useNavigate();
   const [sim, setSim] = useState<SimulacaoEscolhida | null>(null);
+  const [dados, setDados] = useState<DadosPessoais | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [aceite, setAceite] = useState(false);
+  const [gerandoPix, setGerandoPix] = useState(false);
+  const [erroPix, setErroPix] = useState<string | null>(null);
+  const [pix, setPix] = useState<PixChargeResult | null>(null);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [pago, setPago] = useState(false);
+  const gerarPix = useServerFn(createPixCharge);
 
   useEffect(() => {
     const d = lerDadosPessoais();
@@ -54,10 +61,33 @@ function AnaliseSolicitacao() {
       navigate({ to: "/" });
       return;
     }
+    setDados(d);
     setSim(s);
     const t = setTimeout(() => setCarregando(false), 2000);
     return () => clearTimeout(t);
   }, [navigate]);
+
+  const aoPagar = useCallback(() => {
+    setModalAberto(false);
+    setPago(true);
+  }, []);
+
+  async function confirmar() {
+    if (!dados) return;
+    setErroPix(null);
+    setGerandoPix(true);
+    try {
+      const resultado = await gerarPix({
+        data: { name: dados.nome, email: dados.email, cpf: dados.cpf },
+      });
+      setPix(resultado);
+      setModalAberto(true);
+    } catch {
+      setErroPix("Não foi possível gerar o PIX agora. Tente novamente em instantes.");
+    } finally {
+      setGerandoPix(false);
+    }
+  }
 
   if (!sim) return <div className="min-h-screen bg-background" />;
 
