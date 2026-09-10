@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/facttal-logo.png";
 
 const GROUP_ONE = ["Home", "Sobre nós", "Nossa empresa", "Fale conosco"];
 const GROUP_TWO = ["Cartão de crédito", "Crédito para empresa", "Empréstimo pessoal"];
@@ -10,7 +10,7 @@ export function SiteFooter() {
         <div className="flex flex-col items-center md:items-start">
           <div className="w-[75%] max-w-[260px] rounded-lg bg-background px-4 py-3 md:w-full md:max-w-[220px]">
             <img
-              src={logoAsset.url}
+              src={logoAsset}
               alt="FACTTAL BR - Soluções Financeiras"
               className="h-auto w-full object-contain"
             />
