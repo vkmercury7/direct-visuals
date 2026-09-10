@@ -74,12 +74,8 @@ function Simulacao() {
       setValor(LOAN_CONFIG.initial);
       return;
     }
-    const solicitacao = {
-      dadosPessoais: dados,
-      solicitacao: { valorDesejado },
-    };
-    // Próxima etapa do fluxo será conectada aqui.
-    console.info("solicitacao", solicitacao);
+    salvarValorDesejado(valorDesejado);
+    navigate({ to: "/parcelamento" });
   }
 
   return (
