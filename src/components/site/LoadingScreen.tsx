@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/facttal-logo.png";
+import logoAsset from "@/assets/factual-logo.png";
 
 type LoadingScreenProps = {
   titulo?: string;
@@ -15,7 +15,7 @@ export function LoadingScreen({
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background px-6 text-center">
       <img
         src={logoAsset}
-        alt="FACTTAL BR - Soluções Financeiras"
+        alt="FACTUAL FINANCEIRA - Soluções de Crédito"
         className="h-10 w-auto max-w-[180px] object-contain md:h-14 md:max-w-[240px]"
       />
 

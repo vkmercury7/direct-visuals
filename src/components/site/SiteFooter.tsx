@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/facttal-logo.png";
+import logoAsset from "@/assets/factual-logo.png";
 
 const GROUP_ONE = ["Home", "Sobre nós", "Nossa empresa", "Fale conosco"];
 const GROUP_TWO = ["Cartão de crédito", "Crédito para empresa", "Empréstimo pessoal"];
@@ -11,7 +11,7 @@ export function SiteFooter() {
           <div className="w-[75%] max-w-[260px] rounded-lg bg-background px-4 py-3 md:w-full md:max-w-[220px]">
             <img
               src={logoAsset}
-              alt="FACTTAL BR - Soluções Financeiras"
+              alt="FACTUAL FINANCEIRA - Soluções de Crédito"
               className="h-auto w-full object-contain"
             />
           </div>
@@ -46,7 +46,7 @@ export function SiteFooter() {
 
       <div className="w-full bg-brand-orange-dark">
         <p className="mx-auto max-w-5xl px-6 py-4 text-center text-[12px] italic uppercase leading-[1.4] md:text-sm">
-          © 2026 FACTTAL BR — TODOS OS DIREITOS RESERVADOS.
+          © 2026 FACTUAL FINANCEIRA — TODOS OS DIREITOS RESERVADOS.
         </p>
       </div>
     </footer>
