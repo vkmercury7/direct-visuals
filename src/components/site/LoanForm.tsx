@@ -47,6 +47,7 @@ export function LoanForm() {
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [nascimento, setNascimento] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
 
