@@ -106,16 +106,22 @@ export function LoanForm() {
         </div>
 
         <div>
-          <Input
-            id="nascimento"
-            name="nascimento"
-            type="date"
-            aria-label="Data de Nascimento"
-            placeholder="Data de Nascimento"
-            value={nascimento}
-            onChange={(e) => setNascimento(e.target.value)}
-            className={fieldClass}
-          />
+          <div className="relative">
+            <Input
+              id="nascimento"
+              name="nascimento"
+              type="date"
+              aria-label="Data de Nascimento"
+              value={nascimento}
+              onChange={(e) => setNascimento(e.target.value)}
+              className={`${fieldClass} ${nascimento ? "" : "text-transparent [&::-webkit-datetime-edit]:text-transparent"}`}
+            />
+            {!nascimento && (
+              <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-base italic text-muted-foreground">
+                Data de Nascimento
+              </span>
+            )}
+          </div>
           <ErrorText>{errors.nascimento}</ErrorText>
         </div>
       </div>
