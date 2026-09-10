@@ -207,13 +207,50 @@ function AnaliseSolicitacao() {
           </label>
         </div>
 
-        <Button
-          type="button"
-          disabled={!aceite}
-          className="mt-8 h-12 w-full rounded-md bg-brand-orange text-base font-bold uppercase italic tracking-wide text-brand-orange-foreground hover:bg-brand-orange/90"
-        >
-          Confirmar <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-        </Button>
+        {pago ? (
+          <div className="mt-8 flex items-start gap-3 rounded-xl border border-brand-blue/30 bg-secondary p-4 md:p-5">
+            <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-brand-blue" aria-hidden="true" />
+            <div>
+              <p className="font-display text-[16px] font-bold uppercase italic text-brand-blue-dark">
+                Pagamento aprovado
+              </p>
+              <p className="mt-1 text-[14px] leading-[1.45] text-brand-blue-dark/80 md:text-[15px]">
+                Recebemos a confirmação do seu PIX. Sua solicitação seguirá para as etapas
+                seguintes da contratação.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <Button
+              type="button"
+              disabled={!aceite || gerandoPix}
+              onClick={confirmar}
+              className="mt-8 h-12 w-full rounded-md bg-brand-orange text-base font-bold uppercase italic tracking-wide text-brand-orange-foreground hover:bg-brand-orange/90"
+            >
+              {gerandoPix ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" /> Gerando PIX
+                </>
+              ) : (
+                <>
+                  Confirmar <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                </>
+              )}
+            </Button>
+            {erroPix ? (
+              <p className="mt-3 text-center text-[14px] italic text-destructive">{erroPix}</p>
+            ) : null}
+          </>
+        )}
+
+        <PixDialog
+          aberto={modalAberto}
+          onOpenChange={setModalAberto}
+          pix={pix}
+          valor={GUARANTEE_AMOUNT}
+          onPago={aoPagar}
+        />
       </section>
 
       <SiteFooter />
