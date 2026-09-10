@@ -1,13 +1,13 @@
 import { Banknote, Phone, MessageCircle, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { navItems } from "@/components/site/SiteNav";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/facttal-logo.png";
 
 function Logo({ className = "" }: { className?: string }) {
   return (
     <a href="/" className={`flex shrink-0 items-center ${className}`}>
       <img
-        src={logoAsset.url}
+        src={logoAsset}
         alt="FACTTAL BR - Soluções Financeiras"
         className="h-9 w-auto max-w-[160px] object-contain md:h-12 md:max-w-[220px]"
       />
