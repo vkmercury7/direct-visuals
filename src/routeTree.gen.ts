@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnaliseSolicitacaoRouteImport } from './routes/analise-solicitacao'
 import { Route as ParcelamentoRouteImport } from './routes/parcelamento'
+import { Route as ResumoSolicitacaoRouteImport } from './routes/resumo-solicitacao'
 import { Route as SimulacaoRouteImport } from './routes/simulacao'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,9 +20,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnaliseSolicitacaoRoute = AnaliseSolicitacaoRouteImport.update({
+  id: '/analise-solicitacao',
+  path: '/analise-solicitacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ParcelamentoRoute = ParcelamentoRouteImport.update({
   id: '/parcelamento',
   path: '/parcelamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResumoSolicitacaoRoute = ResumoSolicitacaoRouteImport.update({
+  id: '/resumo-solicitacao',
+  path: '/resumo-solicitacao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SimulacaoRoute = SimulacaoRouteImport.update({
@@ -31,31 +43,55 @@ const SimulacaoRoute = SimulacaoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analise-solicitacao': typeof AnaliseSolicitacaoRoute
   '/parcelamento': typeof ParcelamentoRoute
+  '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analise-solicitacao': typeof AnaliseSolicitacaoRoute
   '/parcelamento': typeof ParcelamentoRoute
+  '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analise-solicitacao': typeof AnaliseSolicitacaoRoute
   '/parcelamento': typeof ParcelamentoRoute
+  '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/parcelamento' | '/simulacao'
+  fullPaths:
+    | '/'
+    | '/analise-solicitacao'
+    | '/parcelamento'
+    | '/resumo-solicitacao'
+    | '/simulacao'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/parcelamento' | '/simulacao'
-  id: '__root__' | '/' | '/parcelamento' | '/simulacao'
+  to:
+    | '/'
+    | '/analise-solicitacao'
+    | '/parcelamento'
+    | '/resumo-solicitacao'
+    | '/simulacao'
+  id:
+    | '__root__'
+    | '/'
+    | '/analise-solicitacao'
+    | '/parcelamento'
+    | '/resumo-solicitacao'
+    | '/simulacao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnaliseSolicitacaoRoute: typeof AnaliseSolicitacaoRoute
   ParcelamentoRoute: typeof ParcelamentoRoute
+  ResumoSolicitacaoRoute: typeof ResumoSolicitacaoRoute
   SimulacaoRoute: typeof SimulacaoRoute
 }
 
@@ -68,11 +104,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analise-solicitacao': {
+      id: '/analise-solicitacao'
+      path: '/analise-solicitacao'
+      fullPath: '/analise-solicitacao'
+      preLoaderRoute: typeof AnaliseSolicitacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/parcelamento': {
       id: '/parcelamento'
       path: '/parcelamento'
       fullPath: '/parcelamento'
       preLoaderRoute: typeof ParcelamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resumo-solicitacao': {
+      id: '/resumo-solicitacao'
+      path: '/resumo-solicitacao'
+      fullPath: '/resumo-solicitacao'
+      preLoaderRoute: typeof ResumoSolicitacaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/simulacao': {
@@ -87,7 +137,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnaliseSolicitacaoRoute: AnaliseSolicitacaoRoute,
   ParcelamentoRoute: ParcelamentoRoute,
+  ResumoSolicitacaoRoute: ResumoSolicitacaoRoute,
   SimulacaoRoute: SimulacaoRoute,
 }
 export const routeTree = rootRouteImport
