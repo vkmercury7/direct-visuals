@@ -9,7 +9,7 @@ export function HeroBanner() {
         <div className="order-1 md:order-none">
           <h1 className="font-display text-4xl leading-[1.05] text-primary-foreground sm:text-5xl lg:text-6xl">
             Precisando
-            <span className="mt-3 block w-fit mx-auto rounded-lg bg-brand-orange px-4 py-1 text-brand-orange-foreground md:mx-0">
+            <span className="mt-3 block w-fit mx-auto whitespace-nowrap rounded-lg bg-brand-orange px-4 py-1 text-brand-orange-foreground md:mx-0">
               de dinheiro?
             </span>
           </h1>
