@@ -43,38 +43,38 @@ export const Route = createFileRoute("/api/public/pinpay-webhook")({
         const data = payload.data ?? {};
         if (!event || !data.transaction_id) return new Response(null, { status: 200 });
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-        const dedupeKey = `${data.transaction_id}:${event}`;
-        const { error: dedupeError } = await supabaseAdmin
-          .from("processed_webhooks")
-          .insert({ key: dedupeKey });
-        if (dedupeError) {
-          // chave duplicada = evento já processado
-          return new Response(null, { status: 200 });
+        const { createClient } = await import("@supabase/supabase-js");
+        const url =
+          process.env["SUPABASE_URL"] ??
+          (import.meta.env["VITE_SUPABASE_URL"] as string | undefined);
+        const key =
+          process.env["SUPABASE_PUBLISHABLE_KEY"] ??
+          (import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined);
+        const serviceToken = process.env["PIX_SERVER_TOKEN"];
+        if (!url || !key || !serviceToken) {
+          console.error("pix_db_config_missing");
+          return new Response(null, { status: 500 });
         }
 
-        const novoStatus =
-          event === "payment_approved"
-            ? "paid"
-            : event === "payment_refunded"
-              ? "refunded"
-              : event === "payment_failed"
-                ? (data.status ?? "failed")
-                : null;
+        const db = createClient(url, key, {
+          auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+        });
 
-        if (novoStatus) {
-          const query = supabaseAdmin.from("orders").update({ status: novoStatus });
-          const { error } = data.metadata?.order_id
-            ? await query.eq("id", data.metadata.order_id)
-            : await query.eq("pinpay_id", data.transaction_id);
-          if (error) {
-            console.error("pinpay_webhook_update_failed", error.message);
-            return new Response(null, { status: 500 });
-          }
+        const { error } = await db.rpc("pix_apply_webhook", {
+          p_token: serviceToken,
+          p_event: event,
+          p_transaction_id: data.transaction_id,
+          p_order_id: data.metadata?.order_id ?? null,
+          p_status: data.status ?? null,
+        });
+
+        if (error) {
+          console.error("pinpay_webhook_update_failed", error.message);
+          return new Response(null, { status: 500 });
         }
 
         return new Response(null, { status: 200 });
+
       },
     },
   },
