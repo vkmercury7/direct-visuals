@@ -123,6 +123,7 @@ export type DadosPessoais = {
   email: string;
   cpf: string;
   nascimento: string;
+  telefone?: string;
 };
 
 const STORAGE_KEY = "solicitacao:dadosPessoais";
