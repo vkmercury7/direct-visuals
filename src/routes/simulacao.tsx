@@ -15,6 +15,7 @@ import {
   lerDadosPessoais,
   mascararCpf,
   primeiroNome,
+  salvarValorDesejado,
   type DadosPessoais,
 } from "@/lib/loan-flow";
 
