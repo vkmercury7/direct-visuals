@@ -19,7 +19,21 @@ function maskCpf(value: string) {
     .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
 }
 
-type Errors = Partial<Record<"nome" | "email" | "cpf" | "nascimento" | "termos", string>>;
+function maskTelefone(value: string) {
+  const d = value.replace(/\D/g, "").slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+function telefoneValido(value: string) {
+  const d = value.replace(/\D/g, "");
+  return d.length === 11 && d[2] === "9" && Number(d.slice(0, 2)) >= 11;
+}
+
+type Errors = Partial<
+  Record<"nome" | "email" | "cpf" | "nascimento" | "telefone" | "termos", string>
+>;
 
 function ErrorText({ children }: { children?: string | undefined }) {
   if (!children) return null;
