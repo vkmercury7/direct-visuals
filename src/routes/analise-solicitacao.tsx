@@ -1,18 +1,22 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Info, ShieldCheck } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { ArrowRight, CheckCircle2, Info, Loader2, ShieldCheck } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
+import { PixDialog } from "@/components/site/PixDialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { createPixCharge, type PixChargeResult } from "@/lib/pix.functions";
 import {
   GUARANTEE_AMOUNT,
   GUARANTEE_INFO,
   formatBRL,
   lerDadosPessoais,
   lerSimulacao,
+  type DadosPessoais,
   type SimulacaoEscolhida,
 } from "@/lib/loan-flow";
 
