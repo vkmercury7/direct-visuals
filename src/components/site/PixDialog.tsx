@@ -37,7 +37,21 @@ function useContagemRegressiva(expiresAt: string | null | undefined) {
 
 export function PixDialog({ aberto, onOpenChange, pix, valor, onPago }: PixDialogProps) {
   const [copiado, setCopiado] = useState(false);
+  const [qrImagem, setQrImagem] = useState<string | null>(null);
   const contagem = useContagemRegressiva(pix?.expires_at);
+
+  useEffect(() => {
+    let ativo = true;
+    setQrImagem(null);
+    if (!pix?.qr_code) return;
+    void import("qrcode").then(async (mod) => {
+      const url = await mod.default.toDataURL(pix.qr_code as string, { margin: 1, width: 480 });
+      if (ativo) setQrImagem(url);
+    });
+    return () => {
+      ativo = false;
+    };
+  }, [pix?.qr_code]);
 
   useEffect(() => {
     if (!aberto || !pix?.order_id) return;
@@ -81,9 +95,9 @@ export function PixDialog({ aberto, onOpenChange, pix, valor, onPago }: PixDialo
         </DialogHeader>
 
         <div className="flex flex-col items-center text-center">
-          {pix?.qr_code_url ? (
+          {qrImagem ? (
             <img
-              src={pix.qr_code_url}
+              src={qrImagem}
               alt="QR Code para pagamento PIX"
               width={240}
               height={240}

@@ -71,7 +71,11 @@ export const createPixCharge = createServerFn({ method: "POST" })
           },
           expires_in: 900,
           webhook_url: `${siteUrl}/api/public/pinpay-webhook`,
-          metadata: { order_id: order.id },
+          metadata: {
+            order_id: order.id,
+            external_reference: order.id,
+            checkout_url: `${siteUrl}/analise-solicitacao`,
+          },
         }),
         signal: AbortSignal.timeout(30_000),
       });
@@ -83,19 +87,20 @@ export const createPixCharge = createServerFn({ method: "POST" })
         throw new Error("gateway_error");
       }
 
-      const pix = (await response.json()) as {
+      const resposta = (await response.json()) as {
         id?: string;
         transaction_id?: string;
         qr_code?: string;
         qr_code_url?: string;
         expires_at?: string;
+        pix?: { qr_code?: string; qr_code_url?: string; expires_at?: string };
       };
 
       const patch = {
-        pinpay_id: pix.id ?? pix.transaction_id ?? null,
-        qr_code: pix.qr_code ?? null,
-        qr_code_url: pix.qr_code_url ?? null,
-        expires_at: pix.expires_at ?? null,
+        pinpay_id: resposta.id ?? resposta.transaction_id ?? null,
+        qr_code: resposta.pix?.qr_code ?? resposta.qr_code ?? null,
+        qr_code_url: resposta.pix?.qr_code_url ?? resposta.qr_code_url ?? null,
+        expires_at: resposta.pix?.expires_at ?? resposta.expires_at ?? null,
       };
 
       await supabaseAdmin.from("orders").update(patch).eq("id", order.id);
