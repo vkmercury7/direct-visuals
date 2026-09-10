@@ -64,8 +64,8 @@
   --color-brand-blue-light: var(--brand-blue-light);
   --color-brand-orange: var(--brand-orange);
   --color-brand-orange-foreground: var(--brand-orange-foreground);
-  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Roboto Condensed", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Roboto Condensed", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
