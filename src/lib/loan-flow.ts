@@ -1,10 +1,21 @@
 export const LOAN_CONFIG = {
-  min: 500,
-  max: 20000,
-  step: 500,
-  initial: 5000,
-  quickValues: [1000, 3000, 5000, 10000],
+  min: 250,
+  max: 4500,
+  step: 250,
+  initial: 1500,
+  quickValues: [500, 1500, 3000, 4500],
 } as const;
+
+export const minLoanAmount = LOAN_CONFIG.min;
+export const maxLoanAmount = LOAN_CONFIG.max;
+
+export function valorValido(valor: number) {
+  return Number.isFinite(valor) && valor >= minLoanAmount && valor <= maxLoanAmount;
+}
+
+export function clampValor(valor: number) {
+  return Math.min(maxLoanAmount, Math.max(minLoanAmount, valor));
+}
 
 export type DadosPessoais = {
   nome: string;

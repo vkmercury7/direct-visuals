@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import {
   LOAN_CONFIG,
+  clampValor,
+  valorValido,
   formatBRL,
   formatarData,
   lerDadosPessoais,
@@ -67,9 +69,14 @@ function Simulacao() {
   }
 
   function continuar() {
+    const valorDesejado = clampValor(valor);
+    if (!valorValido(valorDesejado)) {
+      setValor(LOAN_CONFIG.initial);
+      return;
+    }
     const solicitacao = {
       dadosPessoais: dados,
-      solicitacao: { valorDesejado: valor },
+      solicitacao: { valorDesejado },
     };
     // Próxima etapa do fluxo será conectada aqui.
     console.info("solicitacao", solicitacao);
