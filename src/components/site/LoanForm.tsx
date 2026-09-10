@@ -60,12 +60,14 @@ export function LoanForm() {
     if (!cpf.trim()) next.cpf = "Informe seu CPF.";
     else if (!cpfValido(cpf)) next.cpf = "CPF inválido.";
     if (!nascimento) next.nascimento = "Informe sua data de nascimento.";
+    if (!telefone.trim()) next.telefone = "Informe seu celular.";
+    else if (!telefoneValido(telefone)) next.telefone = "Informe um celular válido.";
     if (!accepted) next.termos = "É necessário aceitar os termos.";
 
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
-    salvarDadosPessoais({ nome: nome.trim(), email: email.trim(), cpf, nascimento });
+    salvarDadosPessoais({ nome: nome.trim(), email: email.trim(), cpf, nascimento, telefone });
     setLoading(true);
     setTimeout(() => {
       navigate({ to: "/simulacao" });
