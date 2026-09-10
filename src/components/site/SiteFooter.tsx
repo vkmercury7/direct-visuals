@@ -1,3 +1,5 @@
+import logoAsset from "@/assets/logo.png.asset.json";
+
 const GROUP_ONE = ["Home", "Sobre nós", "Nossa empresa", "Fale conosco"];
 const GROUP_TWO = ["Cartão de crédito", "Crédito para empresa", "Empréstimo pessoal"];
 
@@ -6,9 +8,10 @@ export function SiteFooter() {
     <footer className="w-full bg-brand-orange text-brand-orange-foreground">
       <div className="mx-auto w-full max-w-5xl px-6 py-10 md:grid md:grid-cols-[240px_1fr] md:items-start md:gap-12 md:py-14">
         <div className="flex flex-col items-center md:items-start">
-          <div
-            className="h-14 w-36 rounded-md border border-brand-orange-foreground/50 md:h-16 md:w-44"
-            aria-hidden="true"
+          <img
+            src={logoAsset.url}
+            alt="Logotipo da financeira"
+            className="h-auto w-[75%] max-w-[260px] object-contain md:w-full md:max-w-[220px]"
           />
         </div>
 
