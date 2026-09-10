@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +19,21 @@ function maskCpf(value: string) {
     .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
 }
 
-type Errors = Partial<Record<"nome" | "email" | "cpf" | "nascimento" | "termos", string>>;
+function maskTelefone(value: string) {
+  const d = value.replace(/\D/g, "").slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+function telefoneValido(value: string) {
+  const d = value.replace(/\D/g, "");
+  return d.length === 11 && d[2] === "9" && Number(d.slice(0, 2)) >= 11;
+}
+
+type Errors = Partial<
+  Record<"nome" | "email" | "cpf" | "nascimento" | "telefone" | "termos", string>
+>;
 
 function ErrorText({ children }: { children?: string | undefined }) {
   if (!children) return null;
@@ -33,6 +47,7 @@ export function LoanForm() {
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [nascimento, setNascimento] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
 
@@ -45,12 +60,14 @@ export function LoanForm() {
     if (!cpf.trim()) next.cpf = "Informe seu CPF.";
     else if (!cpfValido(cpf)) next.cpf = "CPF inválido.";
     if (!nascimento) next.nascimento = "Informe sua data de nascimento.";
+    if (!telefone.trim()) next.telefone = "Informe seu celular.";
+    else if (!telefoneValido(telefone)) next.telefone = "Informe um celular válido.";
     if (!accepted) next.termos = "É necessário aceitar os termos.";
 
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
-    salvarDadosPessoais({ nome: nome.trim(), email: email.trim(), cpf, nascimento });
+    salvarDadosPessoais({ nome: nome.trim(), email: email.trim(), cpf, nascimento, telefone });
     setLoading(true);
     setTimeout(() => {
       navigate({ to: "/simulacao" });
@@ -124,7 +141,30 @@ export function LoanForm() {
           </div>
           <ErrorText>{errors.nascimento}</ErrorText>
         </div>
+
+        <div className="md:col-span-2">
+          <Input
+            id="telefone"
+            name="telefone"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            aria-label="Celular / WhatsApp"
+            placeholder="Celular / WhatsApp*"
+            value={telefone}
+            onChange={(e) => setTelefone(maskTelefone(e.target.value))}
+            className={fieldClass}
+          />
+          <ErrorText>{errors.telefone}</ErrorText>
+          <p className="mt-1.5 flex items-start gap-1.5 text-left text-[11px] leading-snug text-muted-foreground md:text-xs">
+            <Phone className="mt-0.5 h-3 w-3 shrink-0" aria-hidden="true" />
+            <span>
+              Utilizaremos este número para entrar em contato sobre sua solicitação de empréstimo.
+            </span>
+          </p>
+        </div>
       </div>
+
 
       <div className="mt-6 flex items-start gap-3">
         <Checkbox
