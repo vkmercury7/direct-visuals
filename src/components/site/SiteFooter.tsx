@@ -10,7 +10,7 @@ export function SiteFooter() {
         <div className="flex flex-col items-center md:items-start">
           <img
             src={logoAsset.url}
-            alt="Logotipo da financeira"
+            alt="FACTTAL BR - Soluções Financeiras"
             className="h-auto w-[75%] max-w-[260px] object-contain md:w-full md:max-w-[220px]"
           />
         </div>
@@ -44,7 +44,7 @@ export function SiteFooter() {
 
       <div className="w-full bg-brand-orange-dark">
         <p className="mx-auto max-w-5xl px-6 py-4 text-center text-[12px] italic uppercase leading-[1.4] md:text-sm">
-          © 2026 FACTA — TODOS OS DIREITOS RESERVADOS.
+          © 2026 FACTTAL BR — TODOS OS DIREITOS RESERVADOS.
         </p>
       </div>
     </footer>

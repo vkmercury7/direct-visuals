@@ -8,7 +8,7 @@ function Logo({ className = "" }: { className?: string }) {
     <a href="/" className={`flex shrink-0 items-center ${className}`}>
       <img
         src={logoAsset.url}
-        alt="Logotipo da financeira"
+        alt="FACTTAL BR - Soluções Financeiras"
         className="h-9 w-auto max-w-[160px] object-contain md:h-12 md:max-w-[220px]"
       />
     </a>
