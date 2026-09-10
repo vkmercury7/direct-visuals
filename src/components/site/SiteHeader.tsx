@@ -1,20 +1,62 @@
-import { Banknote, Phone, MessageCircle } from "lucide-react";
+import { Banknote, Phone, MessageCircle, Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { navItems } from "@/components/site/SiteNav";
+
+function Logo({ className = "" }: { className?: string }) {
+  return (
+    <a href="/" className={`flex shrink-0 items-center gap-2 ${className}`}>
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-blue text-primary-foreground md:h-11 md:w-11">
+        <Banknote className="h-5 w-5 md:h-6 md:w-6" aria-hidden="true" />
+      </span>
+      <span className="font-display text-lg leading-none tracking-tight text-brand-blue-dark md:text-xl">
+        SUA LOGO
+      </span>
+    </a>
+  );
+}
 
 export function SiteHeader() {
   return (
     <header className="w-full bg-background">
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-6 px-4 py-5 md:flex-row md:justify-between md:gap-8 md:py-6">
-        {/* Logo */}
-        <a href="/" className="flex shrink-0 items-center gap-2">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-blue text-primary-foreground">
-            <Banknote className="h-6 w-6" aria-hidden="true" />
-          </span>
-          <span className="font-display text-xl leading-none tracking-tight text-brand-blue-dark">
-            SUA LOGO
-          </span>
-        </a>
+      {/* Mobile: hamburger + logo only */}
+      <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-4 py-3 md:hidden">
+        <Sheet>
+          <SheetTrigger
+            aria-label="Abrir menu"
+            className="flex h-10 w-10 items-center justify-center rounded-md text-brand-blue-dark"
+          >
+            <Menu className="h-7 w-7" aria-hidden="true" />
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[78%] max-w-xs">
+            <SheetTitle className="sr-only">Menu principal</SheetTitle>
+            <nav aria-label="Menu principal" className="mt-8 px-4">
+              <ul className="flex flex-col gap-1">
+                {navItems.map((item) => (
+                  <li key={item}>
+                    <a
+                      href="#"
+                      className="block border-b border-border py-3 text-sm font-semibold uppercase tracking-wide text-brand-blue-dark"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </SheetContent>
+        </Sheet>
 
-        {/* Center CTA */}
+        <div className="flex justify-center">
+          <Logo />
+        </div>
+
+        <span className="h-10 w-10" aria-hidden="true" />
+      </div>
+
+      {/* Desktop */}
+      <div className="mx-auto hidden w-full max-w-7xl flex-col items-center gap-6 px-4 py-5 md:flex md:flex-row md:justify-between md:gap-8 md:py-6">
+        <Logo />
+
         <a
           href="#solicite"
           className="flex items-center gap-3 rounded-full border border-brand-blue/40 px-6 py-2.5 transition-colors hover:border-brand-blue hover:bg-brand-blue/5"
@@ -30,7 +72,6 @@ export function SiteHeader() {
           </span>
         </a>
 
-        {/* Contacts */}
         <div className="flex flex-col items-center gap-5 sm:flex-row md:gap-8">
           <div className="flex items-center gap-2 text-center sm:text-left">
             <Phone className="h-5 w-5 text-brand-blue" aria-hidden="true" />
