@@ -95,9 +95,9 @@ export function PixDialog({ aberto, onOpenChange, pix, valor, onPago }: PixDialo
         </DialogHeader>
 
         <div className="flex flex-col items-center text-center">
-          {pix?.qr_code_url ? (
+          {qrImagem ? (
             <img
-              src={pix.qr_code_url}
+              src={qrImagem}
               alt="QR Code para pagamento PIX"
               width={240}
               height={240}
