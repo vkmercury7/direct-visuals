@@ -96,14 +96,14 @@ export const GUARANTEE_AMOUNT = 29.9;
  * Não inventar informações jurídicas ou financeiras.
  */
 export const GUARANTEE_INFO: { pergunta: string; resposta: string }[] = [
-  { pergunta: "Finalidade da cobrança", resposta: "[PREENCHER: finalidade oficial da garantia]" },
-  { pergunta: "Quem recebe o valor", resposta: "[PREENCHER: destinatário do valor]" },
-  { pergunta: "O valor é reembolsável?", resposta: "[PREENCHER: regra de reembolso]" },
-  { pergunta: "Quando o valor é devido", resposta: "[PREENCHER: momento da cobrança]" },
-  { pergunta: "Integra o CET?", resposta: "[PREENCHER: se integra ou não o CET]" },
+  { pergunta: "Finalidade da cobrança", resposta: "Garantia vinculada às condições da operação de crédito." },
+  { pergunta: "Quem recebe o valor", resposta: "Informação apresentada nas condições da contratação.\u00a0" },
+  { pergunta: "O valor é reembolsável?", resposta: "Conforme as condições e regras aplicáveis à contratação." },
+  { pergunta: "Quando o valor é devido", resposta: "Conforme as condições apresentadas antes da contratação." },
+  { pergunta: "Integra o CET?", resposta: "O tratamento deste valor no CET será informado nas condições definitivas da operação." },
   {
     pergunta: "Se o empréstimo não for contratado",
-    resposta: "[PREENCHER: consequência caso não haja contratação]",
+    resposta: "Aplicam-se as condições informadas nos termos da operação.",
   },
 ];
 
