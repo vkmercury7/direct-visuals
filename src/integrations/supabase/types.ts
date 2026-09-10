@@ -65,12 +65,56 @@ export type Database = {
         }
         Relationships: []
       }
+      service_tokens: {
+        Row: {
+          created_at: string
+          name: string
+          secret: string
+        }
+        Insert: {
+          created_at?: string
+          name: string
+          secret: string
+        }
+        Update: {
+          created_at?: string
+          name?: string
+          secret?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_service_token: { Args: { p_token: string }; Returns: undefined }
+      pix_apply_webhook: {
+        Args: {
+          p_event: string
+          p_order_id: string
+          p_status: string
+          p_token: string
+          p_transaction_id: string
+        }
+        Returns: boolean
+      }
+      pix_create_order: {
+        Args: { p_amount: number; p_token: string }
+        Returns: string
+      }
+      pix_update_order: {
+        Args: {
+          p_expires_at?: string
+          p_order_id: string
+          p_pinpay_id?: string
+          p_qr_code?: string
+          p_qr_code_url?: string
+          p_status?: string
+          p_token: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
