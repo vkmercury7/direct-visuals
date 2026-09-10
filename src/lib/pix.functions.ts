@@ -69,7 +69,7 @@ export const createPixCharge = createServerFn({ method: "POST" })
             document: { type: "CPF", number: data.cpf },
             ...(data.phone ? { phone: data.phone } : {}),
           },
-          expires_in: 900,
+          expires_in: 1200,
           webhook_url: `${siteUrl}/api/public/pinpay-webhook`,
           metadata: {
             order_id: order.id,
