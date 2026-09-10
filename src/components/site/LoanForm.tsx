@@ -141,7 +141,30 @@ export function LoanForm() {
           </div>
           <ErrorText>{errors.nascimento}</ErrorText>
         </div>
+
+        <div className="md:col-span-2">
+          <Input
+            id="telefone"
+            name="telefone"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            aria-label="Celular / WhatsApp"
+            placeholder="Celular / WhatsApp*"
+            value={telefone}
+            onChange={(e) => setTelefone(maskTelefone(e.target.value))}
+            className={fieldClass}
+          />
+          <ErrorText>{errors.telefone}</ErrorText>
+          <p className="mt-1.5 flex items-start gap-1.5 text-left text-[11px] leading-snug text-muted-foreground md:text-xs">
+            <Phone className="mt-0.5 h-3 w-3 shrink-0" aria-hidden="true" />
+            <span>
+              Utilizaremos este número para entrar em contato sobre sua solicitação de empréstimo.
+            </span>
+          </p>
+        </div>
       </div>
+
 
       <div className="mt-6 flex items-start gap-3">
         <Checkbox
