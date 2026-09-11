@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      card_applications: {
+        Row: {
+          bairro: string
+          cep: string
+          cidade: string
+          complemento: string | null
+          cpf: string
+          created_at: string
+          data_nascimento: string
+          email: string
+          endereco: string
+          estado: string
+          id: string
+          limite_pretendido: number
+          nome: string
+          numero: string
+          profissao: string
+          renda_mensal: number
+          status: string
+          telefone: string
+        }
+        Insert: {
+          bairro: string
+          cep: string
+          cidade: string
+          complemento?: string | null
+          cpf: string
+          created_at?: string
+          data_nascimento: string
+          email: string
+          endereco: string
+          estado: string
+          id?: string
+          limite_pretendido: number
+          nome: string
+          numero: string
+          profissao: string
+          renda_mensal: number
+          status?: string
+          telefone: string
+        }
+        Update: {
+          bairro?: string
+          cep?: string
+          cidade?: string
+          complemento?: string | null
+          cpf?: string
+          created_at?: string
+          data_nascimento?: string
+          email?: string
+          endereco?: string
+          estado?: string
+          id?: string
+          limite_pretendido?: number
+          nome?: string
+          numero?: string
+          profissao?: string
+          renda_mensal?: number
+          status?: string
+          telefone?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           amount: number
@@ -114,6 +177,26 @@ export type Database = {
           p_token: string
         }
         Returns: undefined
+      }
+      submit_card_application: {
+        Args: {
+          p_bairro: string
+          p_cep: string
+          p_cidade: string
+          p_complemento: string
+          p_cpf: string
+          p_data_nascimento: string
+          p_email: string
+          p_endereco: string
+          p_estado: string
+          p_limite_pretendido: number
+          p_nome: string
+          p_numero: string
+          p_profissao: string
+          p_renda_mensal: number
+          p_telefone: string
+        }
+        Returns: string
       }
     }
     Enums: {
