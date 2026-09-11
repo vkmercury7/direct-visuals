@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Contactless } from "lucide-react";
+import { ArrowRight, Check, Wifi } from "lucide-react";
 import factualLogo from "@/assets/factual-logo.png";
 import phoneBanner from "@/assets/banner-phone.jpg";
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,7 @@ export function BannerPair() {
                 <span className="absolute inset-x-0 top-1/2 border-t border-brand-blue-dark/40" />
                 <span className="absolute inset-y-0 left-1/2 border-l border-brand-blue-dark/40" />
               </div>
-              <Contactless className="absolute bottom-4 right-3 h-6 w-6 rotate-90 text-primary-foreground/75 md:bottom-5 md:right-4" aria-hidden="true" />
+              <Wifi className="absolute bottom-4 right-3 h-6 w-6 rotate-90 text-primary-foreground/75 md:bottom-5 md:right-4" aria-hidden="true" />
               <span className="absolute bottom-2 left-3 text-[7px] font-bold uppercase text-primary-foreground/65 md:left-4 md:text-[8px]">Cartão de crédito</span>
             </div>
           </div>
