@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnaliseSolicitacaoRouteImport } from './routes/analise-solicitacao'
+import { Route as CartaoRouteImport } from './routes/cartao'
 import { Route as ParcelamentoRouteImport } from './routes/parcelamento'
 import { Route as ResumoSolicitacaoRouteImport } from './routes/resumo-solicitacao'
 import { Route as SimulacaoRouteImport } from './routes/simulacao'
@@ -24,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const AnaliseSolicitacaoRoute = AnaliseSolicitacaoRouteImport.update({
   id: '/analise-solicitacao',
   path: '/analise-solicitacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartaoRoute = CartaoRouteImport.update({
+  id: '/cartao',
+  path: '/cartao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParcelamentoRoute = ParcelamentoRouteImport.update({
@@ -50,6 +56,7 @@ const ApiPublicPinpayWebhookRoute = ApiPublicPinpayWebhookRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analise-solicitacao': typeof AnaliseSolicitacaoRoute
+  '/cartao': typeof CartaoRoute
   '/parcelamento': typeof ParcelamentoRoute
   '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analise-solicitacao': typeof AnaliseSolicitacaoRoute
+  '/cartao': typeof CartaoRoute
   '/parcelamento': typeof ParcelamentoRoute
   '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/analise-solicitacao': typeof AnaliseSolicitacaoRoute
+  '/cartao': typeof CartaoRoute
   '/parcelamento': typeof ParcelamentoRoute
   '/resumo-solicitacao': typeof ResumoSolicitacaoRoute
   '/simulacao': typeof SimulacaoRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/analise-solicitacao'
+    | '/cartao'
     | '/parcelamento'
     | '/resumo-solicitacao'
     | '/simulacao'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/analise-solicitacao'
+    | '/cartao'
     | '/parcelamento'
     | '/resumo-solicitacao'
     | '/simulacao'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/analise-solicitacao'
+    | '/cartao'
     | '/parcelamento'
     | '/resumo-solicitacao'
     | '/simulacao'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnaliseSolicitacaoRoute: typeof AnaliseSolicitacaoRoute
+  CartaoRoute: typeof CartaoRoute
   ParcelamentoRoute: typeof ParcelamentoRoute
   ResumoSolicitacaoRoute: typeof ResumoSolicitacaoRoute
   SimulacaoRoute: typeof SimulacaoRoute
@@ -122,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/analise-solicitacao'
       fullPath: '/analise-solicitacao'
       preLoaderRoute: typeof AnaliseSolicitacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cartao': {
+      id: '/cartao'
+      path: '/cartao'
+      fullPath: '/cartao'
+      preLoaderRoute: typeof CartaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/parcelamento': {
@@ -158,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnaliseSolicitacaoRoute: AnaliseSolicitacaoRoute,
+  CartaoRoute: CartaoRoute,
   ParcelamentoRoute: ParcelamentoRoute,
   ResumoSolicitacaoRoute: ResumoSolicitacaoRoute,
   SimulacaoRoute: SimulacaoRoute,

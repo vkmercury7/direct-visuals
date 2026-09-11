@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ArrowRight, CheckCircle2, CreditCard, Info, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Info, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +24,7 @@ function maskPhone(value: string) { const d = digits(value, 11); if (d.length <=
 function maskCep(value: string) { const d = digits(value, 8); return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d; }
 function maskMoney(value: string) { const d = digits(value, 10); return d ? (Number(d) / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : ""; }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error: string | undefined; children: React.ReactNode }) {
   return <div><Label className="mb-1.5 block text-sm font-semibold text-brand-blue-dark">{label}</Label>{children}{error ? <p className="mt-1 text-xs italic text-destructive">{error}</p> : null}</div>;
 }
 
@@ -45,17 +45,17 @@ export function CardApplicationForm() {
   function validateStep(target: number) {
     const next: Record<string, string> = {};
     if (target === 1) {
-      if (data.nome.trim().split(/\s+/).length < 2) next.nome = "Informe seu nome completo.";
-      if (!cpfValido(data.cpf)) next.cpf = "Informe um CPF válido.";
-      if (!data.dataNascimento || data.dataNascimento > new Date().toISOString().slice(0, 10)) next.dataNascimento = "Informe uma data válida.";
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email.trim())) next.email = "Informe um e-mail válido.";
-      if (digits(data.telefone, 11).length !== 11) next.telefone = "Informe um celular válido.";
+      if (data.nome.trim().split(/\s+/).length < 2) next["nome"] = "Informe seu nome completo.";
+      if (!cpfValido(data.cpf)) next["cpf"] = "Informe um CPF válido.";
+      if (!data.dataNascimento || data.dataNascimento > new Date().toISOString().slice(0, 10)) next["dataNascimento"] = "Informe uma data válida.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email.trim())) next["email"] = "Informe um e-mail válido.";
+      if (digits(data.telefone, 11).length !== 11) next["telefone"] = "Informe um celular válido.";
     } else if (target === 2) {
-      if (Number(digits(data.rendaMensal, 10)) <= 0) next.rendaMensal = "Informe sua renda mensal.";
-      if (data.profissao.trim().length < 2) next.profissao = "Informe sua profissão.";
-      if (digits(data.cep, 8).length !== 8) next.cep = "Informe um CEP válido.";
+      if (Number(digits(data.rendaMensal, 10)) <= 0) next["rendaMensal"] = "Informe sua renda mensal.";
+      if (data.profissao.trim().length < 2) next["profissao"] = "Informe sua profissão.";
+      if (digits(data.cep, 8).length !== 8) next["cep"] = "Informe um CEP válido.";
       for (const key of ["endereco", "numero", "bairro", "cidade"] as const) if (!data[key].trim()) next[key] = "Campo obrigatório.";
-      if (!/^[A-Za-z]{2}$/.test(data.estado.trim())) next.estado = "Use a sigla com 2 letras.";
+      if (!/^[A-Za-z]{2}$/.test(data.estado.trim())) next["estado"] = "Use a sigla com 2 letras.";
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -105,28 +105,28 @@ export function CardApplicationForm() {
 
       {step === 1 ? <div className="space-y-4">
         <h2 className="font-display text-xl font-bold italic uppercase text-brand-blue-dark">Seus dados</h2>
-        <Field label="Nome Completo" error={errors.nome}><Input value={data.nome} onChange={(e) => set("nome", e.target.value)} maxLength={120} autoComplete="name" className={fieldClass} /></Field>
+        <Field label="Nome Completo" error={errors["nome"]}><Input value={data.nome} onChange={(e) => set("nome", e.target.value)} maxLength={120} autoComplete="name" className={fieldClass} /></Field>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="CPF" error={errors.cpf}><Input value={data.cpf} onChange={(e) => set("cpf", maskCpf(e.target.value))} inputMode="numeric" autoComplete="off" className={fieldClass} /></Field>
-          <Field label="Data de Nascimento" error={errors.dataNascimento}><Input type="date" value={data.dataNascimento} onChange={(e) => set("dataNascimento", e.target.value)} max={new Date().toISOString().slice(0, 10)} className={`${fieldClass} pr-3`} /></Field>
+          <Field label="CPF" error={errors["cpf"]}><Input value={data.cpf} onChange={(e) => set("cpf", maskCpf(e.target.value))} inputMode="numeric" autoComplete="off" className={fieldClass} /></Field>
+          <Field label="Data de Nascimento" error={errors["dataNascimento"]}><Input type="date" value={data.dataNascimento} onChange={(e) => set("dataNascimento", e.target.value)} max={new Date().toISOString().slice(0, 10)} className={`${fieldClass} pr-3`} /></Field>
         </div>
-        <Field label="E-mail" error={errors.email}><Input type="email" value={data.email} onChange={(e) => set("email", e.target.value)} maxLength={255} autoComplete="email" className={fieldClass} /></Field>
-        <Field label="Celular / WhatsApp" error={errors.telefone}><Input type="tel" inputMode="numeric" value={data.telefone} onChange={(e) => set("telefone", maskPhone(e.target.value))} autoComplete="tel" className={fieldClass} /></Field>
+        <Field label="E-mail" error={errors["email"]}><Input type="email" value={data.email} onChange={(e) => set("email", e.target.value)} maxLength={255} autoComplete="email" className={fieldClass} /></Field>
+        <Field label="Celular / WhatsApp" error={errors["telefone"]}><Input type="tel" inputMode="numeric" value={data.telefone} onChange={(e) => set("telefone", maskPhone(e.target.value))} autoComplete="tel" className={fieldClass} /></Field>
         <Button type="button" onClick={() => continueTo(2)} className="mt-2 h-12 w-full bg-brand-orange font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Continuar <ArrowRight /></Button>
       </div> : null}
 
       {step === 2 ? <div className="space-y-4">
         <h2 className="font-display text-xl font-bold italic uppercase text-brand-blue-dark">Conte um pouco sobre você</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Renda Mensal" error={errors.rendaMensal}><Input value={data.rendaMensal} onChange={(e) => set("rendaMensal", maskMoney(e.target.value))} inputMode="numeric" placeholder="R$ 3.500,00" className={fieldClass} /></Field>
-          <Field label="Profissão" error={errors.profissao}><Input value={data.profissao} onChange={(e) => set("profissao", e.target.value)} maxLength={100} className={fieldClass} /></Field>
-          <Field label="CEP" error={errors.cep}><Input value={data.cep} onChange={(e) => set("cep", maskCep(e.target.value))} inputMode="numeric" autoComplete="postal-code" className={fieldClass} /></Field>
-          <Field label="Endereço" error={errors.endereco}><Input value={data.endereco} onChange={(e) => set("endereco", e.target.value)} maxLength={160} autoComplete="street-address" className={fieldClass} /></Field>
-          <Field label="Número" error={errors.numero}><Input value={data.numero} onChange={(e) => set("numero", e.target.value)} maxLength={20} className={fieldClass} /></Field>
-          <Field label="Complemento (opcional)"><Input value={data.complemento} onChange={(e) => set("complemento", e.target.value)} maxLength={100} className={fieldClass} /></Field>
-          <Field label="Bairro" error={errors.bairro}><Input value={data.bairro} onChange={(e) => set("bairro", e.target.value)} maxLength={100} className={fieldClass} /></Field>
-          <Field label="Cidade" error={errors.cidade}><Input value={data.cidade} onChange={(e) => set("cidade", e.target.value)} maxLength={100} autoComplete="address-level2" className={fieldClass} /></Field>
-          <Field label="Estado" error={errors.estado}><Input value={data.estado} onChange={(e) => set("estado", e.target.value.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase())} placeholder="UF" autoComplete="address-level1" className={fieldClass} /></Field>
+          <Field label="Renda Mensal" error={errors["rendaMensal"]}><Input value={data.rendaMensal} onChange={(e) => set("rendaMensal", maskMoney(e.target.value))} inputMode="numeric" placeholder="R$ 3.500,00" className={fieldClass} /></Field>
+          <Field label="Profissão" error={errors["profissao"]}><Input value={data.profissao} onChange={(e) => set("profissao", e.target.value)} maxLength={100} className={fieldClass} /></Field>
+          <Field label="CEP" error={errors["cep"]}><Input value={data.cep} onChange={(e) => set("cep", maskCep(e.target.value))} inputMode="numeric" autoComplete="postal-code" className={fieldClass} /></Field>
+          <Field label="Endereço" error={errors["endereco"]}><Input value={data.endereco} onChange={(e) => set("endereco", e.target.value)} maxLength={160} autoComplete="street-address" className={fieldClass} /></Field>
+          <Field label="Número" error={errors["numero"]}><Input value={data.numero} onChange={(e) => set("numero", e.target.value)} maxLength={20} className={fieldClass} /></Field>
+          <Field label="Complemento (opcional)" error={undefined}><Input value={data.complemento} onChange={(e) => set("complemento", e.target.value)} maxLength={100} className={fieldClass} /></Field>
+          <Field label="Bairro" error={errors["bairro"]}><Input value={data.bairro} onChange={(e) => set("bairro", e.target.value)} maxLength={100} className={fieldClass} /></Field>
+          <Field label="Cidade" error={errors["cidade"]}><Input value={data.cidade} onChange={(e) => set("cidade", e.target.value)} maxLength={100} autoComplete="address-level2" className={fieldClass} /></Field>
+          <Field label="Estado" error={errors["estado"]}><Input value={data.estado} onChange={(e) => set("estado", e.target.value.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase())} placeholder="UF" autoComplete="address-level1" className={fieldClass} /></Field>
         </div>
         <div className="flex gap-3 pt-2"><Button type="button" variant="outline" onClick={() => setStep(1)} className="h-12 flex-1 border-brand-blue text-brand-blue-dark"><ArrowLeft /> Voltar</Button><Button type="button" onClick={() => continueTo(3)} className="h-12 flex-1 bg-brand-orange font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Continuar <ArrowRight /></Button></div>
       </div> : null}
@@ -138,7 +138,7 @@ export function CardApplicationForm() {
         <Slider className="mt-7" min={300} max={10000} step={100} value={[data.limitePretendido]} onValueChange={(value) => set("limitePretendido", value[0] ?? 2000)} aria-label="Limite pretendido" />
         <div className="mt-5 grid grid-cols-5 gap-1.5">{[500,1000,2000,3000,5000].map((value) => <Button key={value} type="button" variant={data.limitePretendido === value ? "default" : "outline"} onClick={() => set("limitePretendido", value)} className="h-9 px-1 text-[10px] sm:text-xs">{value.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 })}</Button>)}</div>
         <aside className="mt-6 flex gap-3 rounded-md border border-brand-blue/20 bg-secondary p-4 text-sm leading-relaxed text-brand-blue-dark/80"><Info className="mt-0.5 h-5 w-5 shrink-0 text-brand-blue" aria-hidden="true" /><p>O limite definitivo, caso haja aprovação, será definido após análise das informações fornecidas e poderá ser diferente do valor pretendido.</p></aside>
-        {errors.submit ? <p className="mt-3 text-center text-sm italic text-destructive">{errors.submit}</p> : null}
+        {errors["submit"] ? <p className="mt-3 text-center text-sm italic text-destructive">{errors["submit"]}</p> : null}
         <div className="mt-6 flex gap-3"><Button type="button" variant="outline" onClick={() => setStep(2)} className="h-12 flex-1 border-brand-blue text-brand-blue-dark"><ArrowLeft /> Voltar</Button><Button type="button" onClick={send} className="h-12 flex-[1.6] bg-brand-orange font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Enviar solicitação <ArrowRight /></Button></div>
       </div> : null}
     </div>
