@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Check, Wifi } from "lucide-react";
-import factualLogo from "@/assets/factual-logo.png";
+import { ArrowRight, Check } from "lucide-react";
+import factualCardPremium from "@/assets/factual-card-premium.png";
 import phoneBanner from "@/assets/banner-phone.jpg";
 import { Button } from "@/components/ui/button";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
@@ -42,19 +42,12 @@ export function BannerPair() {
             </Button>
           </div>
 
-          <div className="relative z-10 flex min-w-0 justify-end" aria-label="Representação do cartão de crédito Factual">
-            <div className="relative aspect-[1.586/1] w-full max-w-[180px] rotate-[5deg] overflow-hidden rounded-lg border border-primary-foreground/20 bg-brand-blue shadow-soft md:max-w-[205px]">
-              <div className="absolute inset-x-0 top-0 h-1 bg-brand-orange" aria-hidden="true" />
-              <div className="absolute left-3 top-4 max-w-[72%] rounded-sm bg-primary-foreground px-1.5 py-1 md:left-4 md:top-5">
-                <img src={factualLogo} alt="FACTUAL FINANCEIRA" className="h-auto w-auto max-w-full object-contain" />
-              </div>
-              <div className="absolute bottom-4 left-3 h-5 w-7 rounded-sm border border-brand-orange/70 bg-brand-orange/80 md:bottom-5 md:left-4 md:h-6 md:w-8" aria-hidden="true">
-                <span className="absolute inset-x-0 top-1/2 border-t border-brand-blue-dark/40" />
-                <span className="absolute inset-y-0 left-1/2 border-l border-brand-blue-dark/40" />
-              </div>
-              <Wifi className="absolute bottom-4 right-3 h-6 w-6 rotate-90 text-primary-foreground/75 md:bottom-5 md:right-4" aria-hidden="true" />
-              <span className="absolute bottom-2 left-3 text-[7px] font-bold uppercase text-primary-foreground/65 md:left-4 md:text-[8px]">Cartão de crédito</span>
-            </div>
+          <div className="relative z-10 flex min-w-0 justify-end" aria-label="Cartões de crédito Factual">
+            <img
+              src={factualCardPremium}
+              alt="Cartões de crédito premium da Factual Financeira"
+              className="h-[145px] w-full max-w-[185px] object-cover object-center md:h-[180px] md:max-w-[220px]"
+            />
           </div>
         </article>
 
