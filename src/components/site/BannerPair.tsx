@@ -1,11 +1,23 @@
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Check, Wifi } from "lucide-react";
 import factualLogo from "@/assets/factual-logo.png";
 import phoneBanner from "@/assets/banner-phone.jpg";
 import { Button } from "@/components/ui/button";
+import { LoadingScreen } from "@/components/site/LoadingScreen";
 
 export function BannerPair() {
+  const navigate = useNavigate();
+  const [preparingCard, setPreparingCard] = useState(false);
+
+  function openCardApplication() {
+    setPreparingCard(true);
+    window.setTimeout(() => navigate({ to: "/cartao" }), 2000);
+  }
+
   return (
     <section className="w-full bg-background">
+      {preparingCard ? <LoadingScreen titulo="Preparando sua solicitação" subtitulo="Aguarde alguns instantes..." rodape="" /> : null}
       <div className="mx-auto grid w-full max-w-5xl gap-4 px-4 md:grid-cols-2 md:gap-6 md:px-6">
         {/* Banner cartão de crédito */}
         <article className="relative grid min-h-[190px] grid-cols-[minmax(0,1.2fr)_minmax(112px,0.8fr)] items-center gap-2 overflow-hidden rounded-xl bg-brand-blue-dark px-4 py-5 md:min-h-[210px] md:grid-cols-[minmax(0,1.15fr)_minmax(170px,0.85fr)] md:gap-5 md:px-7">
@@ -25,7 +37,7 @@ export function BannerPair() {
                 <Check className="h-3 w-3 shrink-0 text-brand-orange" aria-hidden="true" /> Sujeito à análise
               </span>
             </div>
-            <Button type="button" size="sm" className="mt-3 h-8 rounded-md bg-brand-orange px-2.5 font-display text-[10px] font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark md:h-9 md:px-3 md:text-xs">
+            <Button type="button" size="sm" onClick={openCardApplication} className="mt-3 h-8 rounded-md bg-brand-orange px-2.5 font-display text-[10px] font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark md:h-9 md:px-3 md:text-xs">
               Quero meu cartão <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Button>
           </div>
