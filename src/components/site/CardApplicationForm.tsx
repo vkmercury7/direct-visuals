@@ -105,28 +105,28 @@ export function CardApplicationForm() {
 
       {step === 1 ? <div className="space-y-4">
         <h2 className="font-display text-xl font-bold italic uppercase text-brand-blue-dark">Seus dados</h2>
-        <Field label="Nome Completo" error={errors["nome"]}><Input value={data.nome} onChange={(e) => set("nome", e.target.value)} maxLength={120} autoComplete="name" className={fieldClass} /></Field>
+        <Field label="Nome Completo" error={errors["nome"]}><Input aria-label="Nome Completo" value={data.nome} onChange={(e) => set("nome", e.target.value)} maxLength={120} autoComplete="name" className={fieldClass} /></Field>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="CPF" error={errors["cpf"]}><Input value={data.cpf} onChange={(e) => set("cpf", maskCpf(e.target.value))} inputMode="numeric" autoComplete="off" className={fieldClass} /></Field>
-          <Field label="Data de Nascimento" error={errors["dataNascimento"]}><Input type="date" value={data.dataNascimento} onChange={(e) => set("dataNascimento", e.target.value)} max={new Date().toISOString().slice(0, 10)} className={`${fieldClass} pr-3`} /></Field>
+          <Field label="CPF" error={errors["cpf"]}><Input aria-label="CPF" value={data.cpf} onChange={(e) => set("cpf", maskCpf(e.target.value))} inputMode="numeric" autoComplete="off" className={fieldClass} /></Field>
+          <Field label="Data de Nascimento" error={errors["dataNascimento"]}><Input aria-label="Data de Nascimento" type="date" value={data.dataNascimento} onChange={(e) => set("dataNascimento", e.target.value)} max={new Date().toISOString().slice(0, 10)} className={`${fieldClass} pr-3`} /></Field>
         </div>
-        <Field label="E-mail" error={errors["email"]}><Input type="email" value={data.email} onChange={(e) => set("email", e.target.value)} maxLength={255} autoComplete="email" className={fieldClass} /></Field>
-        <Field label="Celular / WhatsApp" error={errors["telefone"]}><Input type="tel" inputMode="numeric" value={data.telefone} onChange={(e) => set("telefone", maskPhone(e.target.value))} autoComplete="tel" className={fieldClass} /></Field>
+        <Field label="E-mail" error={errors["email"]}><Input aria-label="E-mail" type="email" value={data.email} onChange={(e) => set("email", e.target.value)} maxLength={255} autoComplete="email" className={fieldClass} /></Field>
+        <Field label="Celular / WhatsApp" error={errors["telefone"]}><Input aria-label="Celular / WhatsApp" type="tel" inputMode="numeric" value={data.telefone} onChange={(e) => set("telefone", maskPhone(e.target.value))} autoComplete="tel" className={fieldClass} /></Field>
         <Button type="button" onClick={() => continueTo(2)} className="mt-2 h-12 w-full bg-brand-orange font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Continuar <ArrowRight /></Button>
       </div> : null}
 
       {step === 2 ? <div className="space-y-4">
         <h2 className="font-display text-xl font-bold italic uppercase text-brand-blue-dark">Conte um pouco sobre você</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Renda Mensal" error={errors["rendaMensal"]}><Input value={data.rendaMensal} onChange={(e) => set("rendaMensal", maskMoney(e.target.value))} inputMode="numeric" placeholder="R$ 3.500,00" className={fieldClass} /></Field>
-          <Field label="Profissão" error={errors["profissao"]}><Input value={data.profissao} onChange={(e) => set("profissao", e.target.value)} maxLength={100} className={fieldClass} /></Field>
-          <Field label="CEP" error={errors["cep"]}><Input value={data.cep} onChange={(e) => set("cep", maskCep(e.target.value))} inputMode="numeric" autoComplete="postal-code" className={fieldClass} /></Field>
-          <Field label="Endereço" error={errors["endereco"]}><Input value={data.endereco} onChange={(e) => set("endereco", e.target.value)} maxLength={160} autoComplete="street-address" className={fieldClass} /></Field>
-          <Field label="Número" error={errors["numero"]}><Input value={data.numero} onChange={(e) => set("numero", e.target.value)} maxLength={20} className={fieldClass} /></Field>
-          <Field label="Complemento (opcional)" error={undefined}><Input value={data.complemento} onChange={(e) => set("complemento", e.target.value)} maxLength={100} className={fieldClass} /></Field>
-          <Field label="Bairro" error={errors["bairro"]}><Input value={data.bairro} onChange={(e) => set("bairro", e.target.value)} maxLength={100} className={fieldClass} /></Field>
-          <Field label="Cidade" error={errors["cidade"]}><Input value={data.cidade} onChange={(e) => set("cidade", e.target.value)} maxLength={100} autoComplete="address-level2" className={fieldClass} /></Field>
-          <Field label="Estado" error={errors["estado"]}><Input value={data.estado} onChange={(e) => set("estado", e.target.value.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase())} placeholder="UF" autoComplete="address-level1" className={fieldClass} /></Field>
+          <Field label="Renda Mensal" error={errors["rendaMensal"]}><Input aria-label="Renda Mensal" value={data.rendaMensal} onChange={(e) => set("rendaMensal", maskMoney(e.target.value))} inputMode="numeric" placeholder="R$ 3.500,00" className={fieldClass} /></Field>
+          <Field label="Profissão" error={errors["profissao"]}><Input aria-label="Profissão" value={data.profissao} onChange={(e) => set("profissao", e.target.value)} maxLength={100} className={fieldClass} /></Field>
+          <Field label="CEP" error={errors["cep"]}><Input aria-label="CEP" value={data.cep} onChange={(e) => set("cep", maskCep(e.target.value))} inputMode="numeric" autoComplete="postal-code" className={fieldClass} /></Field>
+          <Field label="Endereço" error={errors["endereco"]}><Input aria-label="Endereço" value={data.endereco} onChange={(e) => set("endereco", e.target.value)} maxLength={160} autoComplete="street-address" className={fieldClass} /></Field>
+          <Field label="Número" error={errors["numero"]}><Input aria-label="Número" value={data.numero} onChange={(e) => set("numero", e.target.value)} maxLength={20} className={fieldClass} /></Field>
+          <Field label="Complemento (opcional)" error={undefined}><Input aria-label="Complemento (opcional)" value={data.complemento} onChange={(e) => set("complemento", e.target.value)} maxLength={100} className={fieldClass} /></Field>
+          <Field label="Bairro" error={errors["bairro"]}><Input aria-label="Bairro" value={data.bairro} onChange={(e) => set("bairro", e.target.value)} maxLength={100} className={fieldClass} /></Field>
+          <Field label="Cidade" error={errors["cidade"]}><Input aria-label="Cidade" value={data.cidade} onChange={(e) => set("cidade", e.target.value)} maxLength={100} autoComplete="address-level2" className={fieldClass} /></Field>
+          <Field label="Estado" error={errors["estado"]}><Input aria-label="Estado" value={data.estado} onChange={(e) => set("estado", e.target.value.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase())} placeholder="UF" autoComplete="address-level1" className={fieldClass} /></Field>
         </div>
         <div className="flex gap-3 pt-2"><Button type="button" variant="outline" onClick={() => setStep(1)} className="h-12 flex-1 border-brand-blue text-brand-blue-dark"><ArrowLeft /> Voltar</Button><Button type="button" onClick={() => continueTo(3)} className="h-12 flex-1 bg-brand-orange font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Continuar <ArrowRight /></Button></div>
       </div> : null}
