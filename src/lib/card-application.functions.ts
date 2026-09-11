@@ -40,8 +40,8 @@ export type CardApplicationInput = z.input<typeof cardApplicationSchema>;
 export const submitCardApplication = createServerFn({ method: "POST" })
   .inputValidator((data) => cardApplicationSchema.parse(data))
   .handler(async ({ data }) => {
-    const url = process.env["SUPABASE_URL"];
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
+    const url = process.env["SUPABASE_URL"] ?? (import.meta.env["VITE_SUPABASE_URL"] as string | undefined);
+    const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? (import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined);
     if (!url || !key) throw new Error("Serviço indisponível.");
 
     const client = createClient<Database>(url, key, {
