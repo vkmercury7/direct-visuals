@@ -71,7 +71,7 @@ export function LoanForm() {
     setLoading(true);
     setTimeout(() => {
       navigate({ to: "/simulacao" });
-    }, 3000);
+    }, 5000);
   }
 
   if (loading) return <LoadingScreen />;
