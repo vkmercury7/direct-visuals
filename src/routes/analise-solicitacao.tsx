@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowRight, CheckCircle2, Info, Loader2, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Info, Loader2, ShieldCheck } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
+import { LoanContractDialog } from "@/components/site/LoanContractDialog";
 import { PixDialog } from "@/components/site/PixDialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -50,6 +51,7 @@ function AnaliseSolicitacao() {
   const [erroPix, setErroPix] = useState<string | null>(null);
   const [pix, setPix] = useState<PixChargeResult | null>(null);
   const [modalAberto, setModalAberto] = useState(false);
+  const [contratoAberto, setContratoAberto] = useState(false);
   const [pago, setPago] = useState(false);
   const gerarPix = useServerFn(createPixCharge);
 
@@ -180,6 +182,16 @@ function AnaliseSolicitacao() {
           </div>
         </section>
 
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setContratoAberto(true)}
+          className="mt-6 h-12 w-full rounded-xl border-brand-blue bg-card font-display text-sm font-bold uppercase text-brand-blue-dark hover:bg-secondary hover:text-brand-blue-dark md:h-14 md:text-base"
+        >
+          <FileText className="h-5 w-5 text-brand-blue" aria-hidden="true" />
+          Ler contrato de empréstimo
+        </Button>
+
         <aside className="mt-6 flex gap-3 rounded-xl border border-border bg-secondary p-4 md:p-5">
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-brand-blue" aria-hidden="true" />
           <div className="text-[14px] leading-[1.45] text-brand-blue-dark/80 md:text-[15px]">
@@ -259,6 +271,14 @@ function AnaliseSolicitacao() {
           valor={GUARANTEE_AMOUNT}
           onPago={aoPagar}
         />
+        {dados ? (
+          <LoanContractDialog
+            aberto={contratoAberto}
+            onOpenChange={setContratoAberto}
+            dados={dados}
+            simulacao={sim}
+          />
+        ) : null}
       </section>
 
       <SiteFooter />
