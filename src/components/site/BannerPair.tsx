@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
-import factualCardPremium from "@/assets/factual-card-premium.png";
+import factualCardIsolated from "@/assets/factual-card-isolated.png";
 import phoneBanner from "@/assets/banner-phone.jpg";
 import { Button } from "@/components/ui/button";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
@@ -42,11 +42,11 @@ export function BannerPair() {
             </Button>
           </div>
 
-          <div className="relative z-10 flex min-w-0 justify-end" aria-label="Cartões de crédito Factual">
+          <div className="relative z-10 flex min-w-0 justify-end" aria-label="Cartão de crédito Factual">
             <img
-              src={factualCardPremium}
-              alt="Cartões de crédito premium da Factual Financeira"
-              className="h-[145px] w-full max-w-[185px] object-cover object-center md:h-[180px] md:max-w-[220px]"
+              src={factualCardIsolated}
+              alt="Cartão de crédito premium da Factual Financeira"
+              className="h-auto w-[125%] max-w-none -rotate-[7deg] object-contain drop-shadow-[0_12px_18px_rgba(0,0,0,0.28)] md:w-[118%]"
             />
           </div>
         </article>
