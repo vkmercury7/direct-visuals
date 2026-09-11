@@ -24,15 +24,6 @@ type LoanContractDialogProps = {
 
 const secoes = [
   {
-    titulo: "2. OBJETO",
-    conteudo: (
-      <>
-        <p>Este contrato estabelece as condições gerais relacionadas à operação de empréstimo pessoal escolhida pelo cliente durante a solicitação.</p>
-        <p>As condições financeiras definitivas deverão corresponder à proposta efetivamente apresentada ao cliente.</p>
-      </>
-    ),
-  },
-  {
     titulo: "4. PAGAMENTO DAS PARCELAS",
     conteudo: <p>O cliente compromete-se a realizar o pagamento das parcelas nas datas e condições apresentadas na contratação.</p>,
   },
@@ -123,6 +114,12 @@ export function LoanContractDialog({ aberto, onOpenChange, dados, simulacao }: L
             </dl>
             <h4 className="mt-5 text-xs font-bold uppercase text-brand-orange">Contratada / Credora</h4>
             <p className="mt-2 font-semibold">FACTUAL FINANCEIRA</p>
+          </section>
+
+          <section className="mt-6 space-y-3 border-t border-border pt-5">
+            <h3 className="font-display font-bold uppercase text-brand-blue">2. Objeto</h3>
+            <p>Este contrato estabelece as condições gerais relacionadas à operação de empréstimo pessoal escolhida pelo cliente durante a solicitação.</p>
+            <p>As condições financeiras definitivas deverão corresponder à proposta efetivamente apresentada ao cliente.</p>
           </section>
 
           <section className="mt-6 border-t border-border pt-5 space-y-3">
