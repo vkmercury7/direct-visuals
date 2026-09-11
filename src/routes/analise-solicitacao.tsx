@@ -12,7 +12,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { createPixCharge, type PixChargeResult } from "@/lib/pix.functions";
 import {
   GUARANTEE_AMOUNT,
-  GUARANTEE_INFO,
   formatBRL,
   lerDadosPessoais,
   lerSimulacao,
@@ -143,33 +142,42 @@ function AnaliseSolicitacao() {
             <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-brand-blue" aria-hidden="true" />
             <div>
               <h2 className="font-display text-[16px] font-bold italic uppercase tracking-wide text-brand-blue">
-                Garantia da operação
+                Informações da operação
               </h2>
-              <p className="mt-2 text-[15px] leading-[1.45] text-brand-blue-dark/80 md:text-base">
-                Esta operação possui uma garantia prevista nas condições da contratação.
-              </p>
             </div>
           </div>
 
           <div className="mt-5 rounded-xl border border-border bg-secondary p-5 text-center">
-            <p className="text-[12px] uppercase italic tracking-[0.18em] text-muted-foreground">
-              Valor da garantia
-            </p>
             <p className="mt-2 font-display text-[34px] font-bold italic leading-none text-brand-blue-dark md:text-4xl">
               {formatBRL(GUARANTEE_AMOUNT)}
             </p>
+            <p className="mt-4 text-[15px] leading-[1.45] text-brand-blue-dark/80 md:text-base">
+              Existe uma cobrança de R$ 29,90 vinculada à operação. As condições, finalidade e
+              demais informações aplicáveis seguem os termos da contratação.
+            </p>
           </div>
 
-          <dl className="mt-5 space-y-3 text-[14px] text-brand-blue-dark md:text-[15px]">
-            {GUARANTEE_INFO.map((item) => (
-              <div key={item.pergunta} className="border-b border-border/60 pb-2 last:border-0 last:pb-0">
-                <dt className="text-[12px] uppercase italic tracking-wide text-muted-foreground">
-                  {item.pergunta}
-                </dt>
-                <dd className="mt-1 leading-[1.45]">{item.resposta}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className="mt-5 text-[14px] leading-[1.45] text-brand-blue-dark md:text-[15px]">
+            <h3 className="font-display text-[14px] font-bold italic uppercase tracking-wide text-brand-blue">
+              Termos e contrato
+            </h3>
+            <p className="mt-3">
+              As condições referentes à operação de crédito serão formalizadas nos documentos
+              contratuais correspondentes.
+            </p>
+            <p className="mt-3">
+              Os termos e documentos da contratação serão encaminhados para o endereço de e-mail
+              informado pelo cliente durante a solicitação.
+            </p>
+            <p className="mt-3">
+              É responsabilidade do cliente conferir seus dados, ler integralmente os documentos
+              recebidos e verificar todas as condições aplicáveis à operação.
+            </p>
+            <p className="mt-3 text-[12px] text-muted-foreground md:text-[13px]">
+              Antes de concluir qualquer contratação, confira valores, parcelas, encargos, taxas,
+              CET e demais condições apresentadas nos documentos aplicáveis.
+            </p>
+          </div>
         </section>
 
         <aside className="mt-6 flex gap-3 rounded-xl border border-border bg-secondary p-4 md:p-5">
