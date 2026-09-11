@@ -51,7 +51,7 @@ function Parcelamento() {
       return;
     }
     setValor(v);
-    const t = setTimeout(() => setCarregando(false), 2800);
+    const t = setTimeout(() => setCarregando(false), 5000);
     return () => clearTimeout(t);
   }, [navigate]);
 

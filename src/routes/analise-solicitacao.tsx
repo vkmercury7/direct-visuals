@@ -63,7 +63,7 @@ function AnaliseSolicitacao() {
     }
     setDados(d);
     setSim(s);
-    const t = setTimeout(() => setCarregando(false), 2000);
+    const t = setTimeout(() => setCarregando(false), 5000);
     return () => clearTimeout(t);
   }, [navigate]);
 
