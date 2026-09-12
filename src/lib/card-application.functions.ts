@@ -65,5 +65,5 @@ export const submitCardApplication = createServerFn({ method: "POST" })
       p_limite_pretendido: data.limitePretendido,
     });
     if (error || !id) throw new Error("Não foi possível enviar a solicitação.");
-    return { success: true };
+    return { success: true, status: "recebida" as const };
   });
