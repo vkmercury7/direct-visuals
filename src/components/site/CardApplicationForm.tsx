@@ -82,6 +82,26 @@ export function CardApplicationForm() {
       await new Promise((resolve) => setTimeout(resolve, 7000));
       const applicationResult = await getResult({ data: { id: submissionResult.id } });
       sessionStorage.removeItem("cartao:solicitacao");
+      if (applicationResult.status === "aprovada" && applicationResult.applicant) {
+        const saved = applicationResult.applicant;
+        setData({
+          ...data,
+          nome: saved.nome,
+          cpf: saved.cpf,
+          dataNascimento: saved.dataNascimento,
+          email: saved.email,
+          telefone: saved.telefone,
+          rendaMensal: formatBRL(saved.rendaMensal / 100),
+          profissao: saved.profissao,
+          cep: saved.cep,
+          endereco: saved.endereco,
+          numero: saved.numero,
+          complemento: saved.complemento,
+          bairro: saved.bairro,
+          cidade: saved.cidade,
+          estado: saved.estado,
+        });
+      }
       setResult(applicationResult);
       setAnalyzing(false);
     } catch {

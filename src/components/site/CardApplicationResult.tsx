@@ -36,6 +36,22 @@ export type CardApprovalResult = {
   approvedLimit?: number;
   annualFee?: number;
   cardProduct?: string;
+  applicant?: {
+    nome: string;
+    cpf: string;
+    dataNascimento: string;
+    email: string;
+    telefone: string;
+    rendaMensal: number;
+    profissao: string;
+    cep: string;
+    endereco: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+  };
 };
 
 function maskCpf(value: string) {

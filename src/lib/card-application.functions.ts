@@ -46,6 +46,22 @@ const cardApplicationResultSchema = z.object({
   approvedLimit: z.number().int().positive().nullable(),
   annualFee: z.number().int().positive().nullable(),
   cardProduct: z.string().trim().min(1).nullable(),
+  applicant: z.object({
+    nome: z.string(),
+    cpf: z.string(),
+    dataNascimento: z.string(),
+    email: z.string(),
+    telefone: z.string(),
+    rendaMensal: z.number().int(),
+    profissao: z.string(),
+    cep: z.string(),
+    endereco: z.string(),
+    numero: z.string(),
+    complemento: z.string(),
+    bairro: z.string(),
+    cidade: z.string(),
+    estado: z.string(),
+  }),
 });
 
 export const submitCardApplication = createServerFn({ method: "POST" })
@@ -93,13 +109,14 @@ export const getCardApplicationResult = createServerFn({ method: "GET" })
     const parsedResult = cardApplicationResultSchema.safeParse(rawResult);
     if (error || !parsedResult.success) throw new Error("Não foi possível consultar a solicitação.");
 
-    const { status, approvedLimit, annualFee, cardProduct } = parsedResult.data;
+    const { status, approvedLimit, annualFee, cardProduct, applicant } = parsedResult.data;
     if (status === "aprovada" && approvedLimit !== null && annualFee !== null && cardProduct !== null) {
       return {
         status,
         approvedLimit,
         annualFee,
         cardProduct,
+        applicant,
       };
     }
 
