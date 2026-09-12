@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ArrowRight, CheckCircle2, Info, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Info, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { CardApplicationResult, type CardApprovalResult } from "@/components/site/CardApplicationResult";
+import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { cpfValido, formatBRL } from "@/lib/loan-flow";
 import { submitCardApplication } from "@/lib/card-application.functions";
 
@@ -34,8 +36,9 @@ export function CardApplicationForm() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FormData>(initialData);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [sending, setSending] = useState(false);
-  const [complete, setComplete] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [result, setResult] = useState<CardApprovalResult | null>(null);
   const set = (key: keyof FormData, value: string | number) => setData((current) => ({ ...current, [key]: value }));
 
   useEffect(() => {
@@ -65,36 +68,32 @@ export function CardApplicationForm() {
 
   async function send() {
     if (!validateStep(1) || !validateStep(2)) return;
-    setSending(true);
+    setSubmitting(true);
     setErrors({});
     try {
-      await submit({ data: {
+      const submissionResult = await submit({ data: {
         nome: data.nome, cpf: digits(data.cpf, 11), dataNascimento: data.dataNascimento,
         email: data.email, telefone: digits(data.telefone, 11), rendaMensal: Number(digits(data.rendaMensal, 10)),
         profissao: data.profissao, cep: digits(data.cep, 8), endereco: data.endereco, numero: data.numero,
         complemento: data.complemento, bairro: data.bairro, cidade: data.cidade, estado: data.estado,
         limitePretendido: data.limitePretendido * 100,
       }});
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      setSubmitting(false);
+      setAnalyzing(true);
+      await new Promise((resolve) => setTimeout(resolve, 7000));
       sessionStorage.removeItem("cartao:solicitacao");
-      setComplete(true);
+      setResult(submissionResult);
+      setAnalyzing(false);
     } catch {
       setErrors({ submit: "Não foi possível enviar agora. Tente novamente em instantes." });
-    } finally { setSending(false); }
+      setSubmitting(false);
+      setAnalyzing(false);
+    }
   }
 
-  if (complete) return (
-    <div className="px-5 py-10 text-center md:px-10 md:py-12">
-      <CheckCircle2 className="mx-auto h-14 w-14 text-brand-orange" aria-hidden="true" />
-      <h2 className="mt-5 font-display text-2xl font-bold italic uppercase text-brand-blue-dark">Solicitação recebida</h2>
-      <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-brand-blue-dark/80">Recebemos suas informações para análise da solicitação do Cartão Factual.</p>
-      <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-brand-blue-dark/80">Caso seja necessário, entraremos em contato pelos dados informados.</p>
-      <p className="mt-4 text-xs font-semibold uppercase text-muted-foreground">Este envio não representa aprovação nem garantia de limite.</p>
-      <Button type="button" onClick={() => navigate({ to: "/" })} className="mt-7 h-11 bg-brand-orange px-5 font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Voltar para a página inicial</Button>
-    </div>
-  );
+  if (result) return <CardApplicationResult data={data} result={result} />;
 
-  if (sending) return <div className="flex min-h-[420px] flex-col items-center justify-center px-6 text-center"><Loader2 className="h-12 w-12 animate-spin text-brand-orange" /><h2 className="mt-6 font-display text-xl font-bold italic uppercase text-brand-blue-dark">Enviando sua solicitação</h2><p className="mt-2 text-sm italic text-brand-blue">Aguarde alguns instantes...</p></div>;
+  if (analyzing) return <LoadingScreen titulo="Analisando sua solicitação" subtitulo="Estamos processando suas informações. Isso levará apenas alguns instantes." rodape="" />;
 
   return (
     <div className="px-5 py-6 md:px-8 md:py-8">
@@ -139,7 +138,7 @@ export function CardApplicationForm() {
         <div className="mt-5 grid grid-cols-5 gap-1.5">{[500,1000,2000,3000,5000].map((value) => <Button key={value} type="button" variant={data.limitePretendido === value ? "default" : "outline"} onClick={() => set("limitePretendido", value)} className="h-9 px-1 text-[10px] sm:text-xs">{value.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 })}</Button>)}</div>
         <aside className="mt-6 flex gap-3 rounded-md border border-brand-blue/20 bg-secondary p-4 text-sm leading-relaxed text-brand-blue-dark/80"><Info className="mt-0.5 h-5 w-5 shrink-0 text-brand-blue" aria-hidden="true" /><p>O limite definitivo, caso haja aprovação, será definido após análise das informações fornecidas e poderá ser diferente do valor pretendido.</p></aside>
         {errors["submit"] ? <p className="mt-3 text-center text-sm italic text-destructive">{errors["submit"]}</p> : null}
-        <div className="mt-6 flex gap-3"><Button type="button" variant="outline" onClick={() => setStep(2)} className="h-12 flex-1 border-brand-blue text-brand-blue-dark"><ArrowLeft /> Voltar</Button><Button type="button" onClick={send} className="h-12 flex-[1.6] bg-brand-orange font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Enviar solicitação <ArrowRight /></Button></div>
+        <div className="mt-6 flex gap-3"><Button type="button" variant="outline" onClick={() => setStep(2)} disabled={submitting} className="h-12 flex-1 border-brand-blue text-brand-blue-dark"><ArrowLeft /> Voltar</Button><Button type="button" onClick={send} disabled={submitting} className="h-12 flex-[1.6] bg-brand-orange font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">{submitting ? <><Loader2 className="animate-spin" /> Salvando</> : <>Enviar solicitação <ArrowRight /></>}</Button></div>
       </div> : null}
     </div>
   );
