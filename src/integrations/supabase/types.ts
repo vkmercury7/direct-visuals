@@ -152,6 +152,7 @@ export type Database = {
     }
     Functions: {
       check_service_token: { Args: { p_token: string }; Returns: undefined }
+      get_card_application_status: { Args: { p_id: string }; Returns: string }
       pix_apply_webhook: {
         Args: {
           p_event: string
