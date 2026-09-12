@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ArrowRight, Info, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,6 @@ function Field({ label, error, children }: { label: string; error: string | unde
 }
 
 export function CardApplicationForm() {
-  const navigate = useNavigate();
   const submit = useServerFn(submitCardApplication);
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FormData>(initialData);
