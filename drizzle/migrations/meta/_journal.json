@@ -15,6 +15,13 @@
       "when": 1789179238118,
       "tag": "0001_add_card_application_status_lookup",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789179621694,
+      "tag": "0002_enable_card_test_approval",
+      "breakpoints": true
     }
   ]
 }

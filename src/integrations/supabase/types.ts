@@ -16,7 +16,10 @@ export type Database = {
     Tables: {
       card_applications: {
         Row: {
+          annual_fee: number | null
+          approved_limit: number | null
           bairro: string
+          card_product: string | null
           cep: string
           cidade: string
           complemento: string | null
@@ -36,7 +39,10 @@ export type Database = {
           telefone: string
         }
         Insert: {
+          annual_fee?: number | null
+          approved_limit?: number | null
           bairro: string
+          card_product?: string | null
           cep: string
           cidade: string
           complemento?: string | null
@@ -56,7 +62,10 @@ export type Database = {
           telefone: string
         }
         Update: {
+          annual_fee?: number | null
+          approved_limit?: number | null
           bairro?: string
+          card_product?: string | null
           cep?: string
           cidade?: string
           complemento?: string | null
@@ -152,6 +161,7 @@ export type Database = {
     }
     Functions: {
       check_service_token: { Args: { p_token: string }; Returns: undefined }
+      get_card_application_result: { Args: { p_id: string }; Returns: Json }
       get_card_application_status: { Args: { p_id: string }; Returns: string }
       pix_apply_webhook: {
         Args: {
