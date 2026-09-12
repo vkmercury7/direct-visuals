@@ -22,6 +22,13 @@
       "when": 1789179621694,
       "tag": "0002_enable_card_test_approval",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789179898247,
+      "tag": "0003_return_saved_card_application_result",
+      "breakpoints": true
     }
   ]
 }
