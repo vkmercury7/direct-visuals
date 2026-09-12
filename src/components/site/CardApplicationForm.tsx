@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { CardApplicationResult, type CardApprovalResult } from "@/components/site/CardApplicationResult";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { cpfValido, formatBRL } from "@/lib/loan-flow";
-import { submitCardApplication } from "@/lib/card-application.functions";
+import { getCardApplicationResult, submitCardApplication } from "@/lib/card-application.functions";
 
 type FormData = {
   nome: string; cpf: string; dataNascimento: string; email: string; telefone: string;
@@ -31,6 +31,7 @@ function Field({ label, error, children }: { label: string; error: string | unde
 
 export function CardApplicationForm() {
   const submit = useServerFn(submitCardApplication);
+  const getResult = useServerFn(getCardApplicationResult);
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FormData>(initialData);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -79,8 +80,9 @@ export function CardApplicationForm() {
       setSubmitting(false);
       setAnalyzing(true);
       await new Promise((resolve) => setTimeout(resolve, 7000));
+      const applicationResult = await getResult({ data: { id: submissionResult.id } });
       sessionStorage.removeItem("cartao:solicitacao");
-      setResult(submissionResult);
+      setResult(applicationResult);
       setAnalyzing(false);
     } catch {
       setErrors({ submit: "Não foi possível enviar agora. Tente novamente em instantes." });
