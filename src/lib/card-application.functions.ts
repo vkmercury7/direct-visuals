@@ -41,6 +41,13 @@ const applicationIdSchema = z.object({ id: z.string().uuid() });
 
 type CardApplicationStatus = "recebida" | "em_analise" | "aprovada" | "recusada";
 
+const cardApplicationResultSchema = z.object({
+  status: z.enum(["recebida", "em_analise", "aprovada", "recusada"]),
+  approvedLimit: z.number().int().positive().nullable(),
+  annualFee: z.number().int().positive().nullable(),
+  cardProduct: z.string().trim().min(1).nullable(),
+});
+
 export const submitCardApplication = createServerFn({ method: "POST" })
   .inputValidator((data) => cardApplicationSchema.parse(data))
   .handler(async ({ data }) => {
@@ -82,20 +89,17 @@ export const getCardApplicationResult = createServerFn({ method: "GET" })
     const client = createClient<Database>(url, key, {
       auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
     });
-    const { data: rawStatus, error } = await client.rpc("get_card_application_status", { p_id: data.id });
-    if (error || !rawStatus) throw new Error("Não foi possível consultar a solicitação.");
+    const { data: rawResult, error } = await client.rpc("get_card_application_result", { p_id: data.id });
+    const parsedResult = cardApplicationResultSchema.safeParse(rawResult);
+    if (error || !parsedResult.success) throw new Error("Não foi possível consultar a solicitação.");
 
-    const allowedStatuses: CardApplicationStatus[] = ["recebida", "em_analise", "aprovada", "recusada"];
-    const status = allowedStatuses.includes(rawStatus as CardApplicationStatus)
-      ? rawStatus as CardApplicationStatus
-      : "recebida";
-
-    if (status === "aprovada") {
+    const { status, approvedLimit, annualFee, cardProduct } = parsedResult.data;
+    if (status === "aprovada" && approvedLimit !== null && annualFee !== null && cardProduct !== null) {
       return {
         status,
-        approvedLimit: 80_000,
-        annualFee: 2_990,
-        cardProduct: "Factual Simple",
+        approvedLimit,
+        annualFee,
+        cardProduct,
       };
     }
 
