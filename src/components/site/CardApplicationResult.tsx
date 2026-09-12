@@ -32,7 +32,7 @@ type CardData = {
 };
 
 export type CardApprovalResult = {
-  status: "recebida" | "aprovada";
+  status: "recebida" | "em_analise" | "aprovada" | "recusada";
   approvedLimit?: number;
   annualFee?: number;
   cardProduct?: string;
@@ -84,6 +84,24 @@ export function CardApplicationResult({ data, result }: { data: CardData; result
   const [termsOpen, setTermsOpen] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [continuationNotice, setContinuationNotice] = useState(false);
+
+  if (result.status === "em_analise") {
+    return <div className="px-5 py-10 text-center md:px-10 md:py-12">
+      <Info className="mx-auto h-14 w-14 text-brand-orange" aria-hidden="true" />
+      <h2 className="mt-5 font-display text-2xl font-bold italic uppercase text-brand-blue-dark">Solicitação em análise</h2>
+      <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-brand-blue-dark/80">Sua solicitação continua em análise. Entraremos em contato pelos dados informados quando houver uma atualização.</p>
+      <Button type="button" onClick={() => navigate({ to: "/" })} className="mt-7 h-11 bg-brand-orange px-5 font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Voltar para a página inicial</Button>
+    </div>;
+  }
+
+  if (result.status === "recusada") {
+    return <div className="px-5 py-10 text-center md:px-10 md:py-12">
+      <Info className="mx-auto h-14 w-14 text-brand-orange" aria-hidden="true" />
+      <h2 className="mt-5 font-display text-2xl font-bold italic uppercase text-brand-blue-dark">Solicitação não aprovada</h2>
+      <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-brand-blue-dark/80">No momento, não foi possível aprovar sua solicitação do Cartão Factual.</p>
+      <Button type="button" onClick={() => navigate({ to: "/" })} className="mt-7 h-11 bg-brand-orange px-5 font-bold uppercase text-brand-orange-foreground hover:bg-brand-orange-dark">Voltar para a página inicial</Button>
+    </div>;
+  }
 
   if (result.status !== "aprovada" || result.approvedLimit === undefined || result.annualFee === undefined) {
     return <div className="px-5 py-10 text-center md:px-10 md:py-12">

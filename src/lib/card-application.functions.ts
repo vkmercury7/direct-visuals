@@ -37,6 +37,10 @@ const cardApplicationSchema = z.object({
 
 export type CardApplicationInput = z.input<typeof cardApplicationSchema>;
 
+const applicationIdSchema = z.object({ id: z.string().uuid() });
+
+type CardApplicationStatus = "recebida" | "em_analise" | "aprovada" | "recusada";
+
 export const submitCardApplication = createServerFn({ method: "POST" })
   .inputValidator((data) => cardApplicationSchema.parse(data))
   .handler(async ({ data }) => {
@@ -65,5 +69,35 @@ export const submitCardApplication = createServerFn({ method: "POST" })
       p_limite_pretendido: data.limitePretendido,
     });
     if (error || !id) throw new Error("Não foi possível enviar a solicitação.");
-    return { success: true, status: "recebida" as const };
+    return { success: true, id };
+  });
+
+export const getCardApplicationResult = createServerFn({ method: "GET" })
+  .inputValidator((data) => applicationIdSchema.parse(data))
+  .handler(async ({ data }) => {
+    const url = process.env["SUPABASE_URL"] ?? (import.meta.env["VITE_SUPABASE_URL"] as string | undefined);
+    const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? (import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined);
+    if (!url || !key) throw new Error("Serviço indisponível.");
+
+    const client = createClient<Database>(url, key, {
+      auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+    });
+    const { data: rawStatus, error } = await client.rpc("get_card_application_status", { p_id: data.id });
+    if (error || !rawStatus) throw new Error("Não foi possível consultar a solicitação.");
+
+    const allowedStatuses: CardApplicationStatus[] = ["recebida", "em_analise", "aprovada", "recusada"];
+    const status = allowedStatuses.includes(rawStatus as CardApplicationStatus)
+      ? rawStatus as CardApplicationStatus
+      : "recebida";
+
+    if (status === "aprovada") {
+      return {
+        status,
+        approvedLimit: 80_000,
+        annualFee: 2_990,
+        cardProduct: "Factual Simple",
+      };
+    }
+
+    return { status };
   });
