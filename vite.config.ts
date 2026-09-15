@@ -9,4 +9,7 @@ export default defineConfig({
     tanstackStart(),
     react(),
   ],
+  build: {
+    cssMinify: false,
+  },
 });
