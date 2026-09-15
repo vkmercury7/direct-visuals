@@ -67,9 +67,26 @@ export const createPixCharge = createServerFn({ method: "POST" })
     });
 
     if (dbErr || !orderId) {
-      console.error("pix_order_insert_failed", dbErr?.message);
-      throw new Error("erro_interno");
-    }
+  let supabaseHost = "invalid_url";
+
+  try {
+    supabaseHost = new URL(
+      process.env["SUPABASE_URL"] ??
+        (import.meta.env["VITE_SUPABASE_URL"] as string | undefined) ??
+        ""
+    ).host;
+  } catch {}
+
+  console.error("pix_order_insert_failed", {
+    host: supabaseHost,
+    message: dbErr?.message ?? null,
+    details: dbErr?.details ?? null,
+    hint: dbErr?.hint ?? null,
+    code: dbErr?.code ?? null,
+  });
+
+  throw new Error("erro_interno");
+}
 
     const order = { id: orderId as string };
 
