@@ -5,6 +5,7 @@ import { HeroBanner } from "@/components/site/HeroBanner";
 import { CallToActionSection } from "@/components/site/CallToActionSection";
 import { BannerPair } from "@/components/site/BannerPair";
 import { ProductsSection } from "@/components/site/ProductsSection";
+import { ContactWhatsAppSection } from "@/components/site/ContactWhatsAppSection";
 import { StoreLocator } from "@/components/site/StoreLocator";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
