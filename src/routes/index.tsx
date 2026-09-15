@@ -37,6 +37,7 @@ function Index() {
       <HeroBanner />
       <CallToActionSection />
       <BannerPair />
+      <ProductsSection />
       <div className="h-14 bg-background md:h-24" aria-hidden="true" />
       <StoreLocator />
       <div className="h-6 bg-background md:h-10" aria-hidden="true" />
