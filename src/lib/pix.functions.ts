@@ -37,6 +37,12 @@ async function getServerDb() {
     process.env["SUPABASE_PUBLISHABLE_KEY"] ??
     (import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined);
   const token = process.env["PIX_SERVER_TOKEN"];
+  console.log("pix_token_runtime_debug", {
+  exists: Boolean(token),
+  length: token?.length ?? 0,
+  start: token?.slice(0, 4) ?? "",
+  end: token?.slice(-4) ?? "",
+});
   if (!url || !key || !token) {
     console.error("pix_db_config_missing", {
       url: Boolean(url),
